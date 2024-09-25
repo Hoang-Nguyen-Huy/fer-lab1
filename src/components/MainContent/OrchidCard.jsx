@@ -4,12 +4,11 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Divider from "@mui/joy/Divider";
-import { CardMedia, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
 import useModal from "../../hooks/useModal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { Image } from "@mui/icons-material";
 
 const style = {
   position: "absolute",
