@@ -1,8 +1,12 @@
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 import './Footer.css';
+import { useContext } from 'react';
+import { ThemeContext } from '../../themes/ThemeContext';
 
 export default function Footer() {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <Box
       component="footer"
@@ -10,7 +14,7 @@ export default function Footer() {
         py: 3,
         px: 2,
         mt: 'auto',
-        backgroundColor: '#f4e0c1', // Light sand color
+        backgroundColor: theme.footer.backgroundColor, // Light sand color
       }}
       className="footer-content"
     >

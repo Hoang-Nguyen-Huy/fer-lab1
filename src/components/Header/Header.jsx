@@ -10,11 +10,15 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import ToggleThemeButton from '../Button/ToggleThemeButton';
+import { ThemeContext } from '../../themes/ThemeContext';
+import { useContext } from 'react';
 
 const pages = ['Home', 'About', 'Contact'];
 
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const { theme } = useContext(ThemeContext);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -25,7 +29,7 @@ export default function Header() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color={theme.header.backgroundColor}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -111,6 +115,8 @@ export default function Header() {
               </Button>
             ))}
           </Box>
+
+          <ToggleThemeButton/>
         </Toolbar>
       </Container>
     </AppBar>

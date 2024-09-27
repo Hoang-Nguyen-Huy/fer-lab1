@@ -2,8 +2,12 @@ import { Container, Grid } from "@mui/joy";
 import React from "react";
 import { Orchids } from "../../ListOfOrchids";
 import OrchidCard from "./OrchidCard";
+import { useContext } from "react";
+import { ThemeContext } from "../../themes/ThemeContext";
 
 export default function Content() {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <Grid
       container
@@ -15,6 +19,7 @@ export default function Content() {
         padding: 2,
         width: "100%",
         margin: "0 auto",
+        backgroundColor: theme.mainContent.backgroundColor
       }}
     >
       {Orchids.map((orchid) => {
