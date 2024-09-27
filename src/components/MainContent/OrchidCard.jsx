@@ -29,13 +29,13 @@ export default function OrchidCard({ orchid }) {
   return (
     <>
       <Card
-        variant='outlined'
+        variant='solid'
         sx={{
           width: 320,
           bgcolor: "black",
           color: "white",
           "&:hover": {
-            boxShadow: "0 0 10px rgba(255, 255, 255, 0.3)",
+            boxShadow: "0 0 10px rgba(255, 255, 255, 0.8)",
           },
         }}
         onClick={() => showModal(orchid)}
