@@ -12,7 +12,7 @@ export default function Content() {
     <Grid
       container
       spacing={{ xs: 2, md: 3, lg: 4 }}
-      columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+      // columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
       sx={{
         flexGrow: 1,
         justifyContent: "center",
@@ -24,7 +24,7 @@ export default function Content() {
     >
       {Orchids.map((orchid) => {
         return (
-          <Grid key={orchid.Id} size={{ xs: 2, sm: 4, md: 4 }}>
+          <Grid key={orchid.Id} size={{ xs: 1, sm: 3, md: 4 }}>
             <OrchidCard key={orchid.Id} orchid={orchid} />
           </Grid>
         );

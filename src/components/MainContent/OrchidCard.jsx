@@ -4,11 +4,13 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Divider from "@mui/joy/Divider";
-import { Rating } from "@mui/material";
+import { Button, Rating } from "@mui/material";
 import useModal from "../../hooks/useModal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CategoryIcon from "@mui/icons-material/Category";
 
 const style = {
   position: "absolute",
@@ -24,7 +26,7 @@ const style = {
 };
 
 export default function OrchidCard({ orchid }) {
-  const { isVisible, detail, showModal, hideModal } = useModal({ orchid });
+  const { isVisible, showModal, hideModal } = useModal({ orchid });
 
   return (
     <>
@@ -38,10 +40,13 @@ export default function OrchidCard({ orchid }) {
             boxShadow: "0 0 10px rgba(255, 255, 255, 0.8)",
           },
         }}
-        onClick={() => showModal(orchid)}
       >
         <CardOverflow>
-          <AspectRatio ratio='2'>
+          <AspectRatio
+            variant='outlined'
+            ratio='2'
+            onClick={() => showModal(orchid)}
+          >
             <img
               src={orchid.image + "?auto=format&fit=crop&w=318"}
               srcSet={orchid.image + "?auto=format&fit=crop&w=318&dpr=2 2x"}
@@ -57,38 +62,44 @@ export default function OrchidCard({ orchid }) {
           >
             {orchid.name}
           </Typography>
-          <Typography level='body-sm' sx={{ color: "grey.400", mb: 2 }}>
-            {orchid.origin}
-          </Typography>
+          <Box>
+            <Typography
+              level='body-sm'
+              sx={{
+                color: "grey.400",
+                mb: 2,
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <LocationOnIcon sx={{ marginRight: "4px", width: "16px" }} />
+              {orchid.origin}
+            </Typography>
+            <Typography
+              level='body-sm'
+              sx={{
+                color: "grey.400",
+                mb: 2,
+                alignItems: "center",
+                display: "flex",
+              }}
+            >
+              <CategoryIcon sx={{ marginRight: "4px", width: "16px" }} />
+              {orchid.category}
+            </Typography>
+          </Box>
         </CardContent>
         <CardOverflow
           variant='soft'
           sx={{ bgcolor: "rgba(255, 255, 255, 0.1)" }}
         >
           <Divider inset='context' sx={{ bgcolor: "white" }} />
-          <CardContent orientation='horizontal'>
-            {/* <Typography
-            level="body-xs"
-            textColor="text.secondary"
-            sx={{
-              fontWeight: "md",
-              color: "white",
-            }}
+          <CardContent
+            orientation='horizontal'
+            sx={{ justifyContent: "space-between" }}
           >
-            {orchid.rating} rating
-          </Typography> */}
             <Rating name='read-only' value={orchid.rating} readOnly />
-            <Divider orientation='vertical' sx={{ color: "white" }} />
-            <Typography
-              level='body-xs'
-              textColor='text.secondary'
-              sx={{
-                fontWeight: "md",
-                color: "white",
-              }}
-            >
-              {orchid.category}
-            </Typography>
+            <Button variant='outlined'>Detail</Button>
           </CardContent>
         </CardOverflow>
       </Card>
