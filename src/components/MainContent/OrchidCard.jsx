@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CategoryIcon from "@mui/icons-material/Category";
+import { useNavigate } from "react-router-dom";
 
 const style = {
   position: "absolute",
@@ -27,6 +28,11 @@ const style = {
 
 export default function OrchidCard({ orchid }) {
   const { isVisible, showModal, hideModal } = useModal({ orchid });
+  const navigate = useNavigate();
+
+  const navigateDetailPage = () => {
+    navigate(`/fer-lab1/${orchid.Id}`);
+  };
 
   return (
     <>
@@ -99,7 +105,9 @@ export default function OrchidCard({ orchid }) {
             sx={{ justifyContent: "space-between" }}
           >
             <Rating name='read-only' value={orchid.rating} readOnly />
-            <Button variant='outlined'>Detail</Button>
+            <Button variant='outlined' onClick={navigateDetailPage}>
+              Detail
+            </Button>
           </CardContent>
         </CardOverflow>
       </Card>
