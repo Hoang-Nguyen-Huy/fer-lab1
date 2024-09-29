@@ -13,13 +13,27 @@ import AdbIcon from "@mui/icons-material/Adb";
 import ToggleThemeButton from "../Button/ToggleThemeButton";
 import { ThemeContext } from "../../themes/ThemeContext";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-const pages = ["Home", "About", "Contact"];
+const pages = [
+  {
+    name: "Home",
+    path: "/fer-lab1/",
+  },
+  {
+    name: "About",
+    path: "/fer-lab1/about",
+  },
+  {
+    name: "Contact",
+    path: "/fer-lab1/contact",
+  },
+];
 
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const { theme } = useContext(ThemeContext);
+  const location = useLocation();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -34,7 +48,7 @@ export default function Header() {
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Link to={`/fer-lab1/`} style={{ textDecoration: 'none' }}>
+          <Link to={`/fer-lab1/`} style={{ textDecoration: "none" }}>
             <Typography
               variant='h6'
               noWrap
@@ -82,8 +96,15 @@ export default function Header() {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
+                <MenuItem
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  component={Link}
+                  to={page.path}
+                >
+                  <Typography sx={{ textAlign: "center" }}>
+                    {page.name}
+                  </Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -93,7 +114,7 @@ export default function Header() {
             variant='h5'
             noWrap
             component='a'
-            href='#app-bar-with-responsive-menu'
+            href='/fer-lab1/'
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -110,11 +131,24 @@ export default function Header() {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
+                key={page.name}
+                component={Link}
+                to={page.path}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "block",
+                  backgroundColor:
+                    location.pathname === page.path
+                      ? "rgba(255, 255, 255, 0.2)"
+                      : "transparent",
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
