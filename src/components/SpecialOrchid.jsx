@@ -1,13 +1,15 @@
 import { Grid } from "@mui/joy";
 import React from "react";
-import { Orchids } from "../../ListOfOrchids";
-import OrchidCard from "./OrchidCard";
+import { Orchids } from "../ListOfOrchids";
+import OrchidCard from "./MainContent/OrchidCard";
 import { useContext } from "react";
-import { ThemeContext } from "../../themes/ThemeContext";
+import { ThemeContext } from "../themes/ThemeContext";
 
-export default function Content() {
+export default function SpecialOrchid() {
   const { theme } = useContext(ThemeContext);
 
+  //Filter orchids to only include special ones
+  const specialOrchids = Orchids.filter((orchid) => orchid.isSpecial);
   return (
     <Grid
       container
@@ -22,7 +24,7 @@ export default function Content() {
         backgroundColor: theme.mainContent.backgroundColor,
       }}
     >
-      {Orchids.map((orchid) => {
+      {specialOrchids.map((orchid) => {
         return (
           <Grid key={orchid.Id} size={{ xs: 1, sm: 3, md: 4 }}>
             <OrchidCard key={orchid.Id} orchid={orchid} />

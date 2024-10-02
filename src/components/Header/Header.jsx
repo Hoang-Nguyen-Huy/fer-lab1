@@ -21,6 +21,10 @@ const pages = [
     path: "/fer-lab1/",
   },
   {
+    name: "Special",
+    path: "/fer-lab1/natural",
+  },
+  {
     name: "About",
     path: "/fer-lab1/about",
   },
