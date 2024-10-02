@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
@@ -10,10 +9,8 @@ import About from "./components/About";
 import Contact from "./components/Contact";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
+    <div style={{ position: "relative" }}>
       <Header />
       <Routes>
         <Route path='/fer-lab1/' element={<Content />} />
@@ -23,7 +20,7 @@ function App() {
         <Route path='/fer-lab1/contact' element={<Contact />} />
       </Routes>
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -22,8 +22,9 @@ main {
 }
 
 .footer {
+  bottom: 0;
   flex-shrink: 0;
-  bottom: -100px;
+  /* bottom: -100px; */
   left: 0;
   width: 100%;
   transition: bottom 0.3s ease-in-out;

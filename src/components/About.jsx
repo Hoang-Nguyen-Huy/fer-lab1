@@ -70,7 +70,6 @@ export default function About() {
         minHeight: "100vh",
         backgroundColor: theme.mainContent.backgroundColor,
         color: theme.text.primary,
-        paddingBottom: "604px",
       }}
     >
       <Container
