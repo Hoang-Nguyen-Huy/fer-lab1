@@ -6,6 +6,7 @@ import Content from "./components/MainContent/Content";
 import { Route, Routes } from "react-router-dom";
 import OrchidDetail from "./components/OrchidDetail";
 import SpecialOrchid from "./components/SpecialOrchid";
+import About from "./components/About";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -17,6 +18,7 @@ function App() {
         <Route path='/fer-lab1/' element={<Content />} />
         <Route path='/fer-lab1/natural' element={<SpecialOrchid />} />
         <Route path='/fer-lab1/:id' element={<OrchidDetail />}></Route>
+        <Route path='/fer-lab1/about' element={<About />} />
       </Routes>
       <Footer />
     </>
