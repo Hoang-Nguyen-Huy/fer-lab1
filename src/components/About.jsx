@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import avt from "../assets/images/avt.jpg";
 import {
   Container,
   Typography,
@@ -99,7 +100,7 @@ export default function About() {
               <Box textAlign='center'>
                 <Avatar
                   alt='Nguyen Huy Hoang'
-                  src=''
+                  src={avt}
                   sx={{ width: 200, height: 200, margin: "auto", mb: 2 }}
                 />
                 <Typography
