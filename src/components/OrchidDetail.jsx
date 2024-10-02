@@ -5,11 +5,14 @@ import { Orchids } from "../ListOfOrchids";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CategoryIcon from "@mui/icons-material/Category";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
+import { useContext } from "react";
+import { ThemeContext } from "../themes/ThemeContext";
 
 export default function OrchidDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const orchid = Orchids.find((o) => o.Id === id);
+  const { theme } = useContext(ThemeContext);
 
   if (!orchid) {
     return <Typography>Orchid not found</Typography>;
@@ -21,8 +24,8 @@ export default function OrchidDetail() {
         maxWidth: 800,
         margin: "auto",
         padding: 4,
-        color: "white",
-        bgcolor: "black",
+        color: theme.text.primary,
+        bgcolor: theme.mainContent.backgroundColor,
       }}
     >
       <Button
