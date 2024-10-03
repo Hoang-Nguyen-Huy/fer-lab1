@@ -40,6 +40,11 @@ const themes = {
       primary: "#bb86fc",
       hover: "#c39dff",
     },
+    chip: {
+      backgroundColor: "#3f3f3f",
+      color: "rgba(255, 255, 255, 0.87)",
+      borderColor: "#bb86fc",
+    },
   },
   light: {
     header: {
@@ -80,6 +85,11 @@ const themes = {
     button: {
       primary: "#6200ee",
       hover: "#7722ff",
+    },
+    chip: {
+      backgroundColor: "#e0e0e0",
+      color: "rgba(0, 0, 0, 0.87)",
+      borderColor: "#6200ee",
     },
   },
 };

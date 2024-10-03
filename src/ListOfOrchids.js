@@ -8,6 +8,7 @@ export const Orchids = [
     color: "pink",
     origin: "Taiwan",
     category: "Cattleya",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "A striking orchid with large, vibrant pink flowers. Native to Taiwan, the Taichung Beauty is highly valued for its bold colors and long-lasting blooms. It is commonly cultivated for decorative purposes.",
   },
@@ -21,6 +22,7 @@ export const Orchids = [
     color: "white",
     origin: "Thailand",
     category: "Phalaenopsis",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "This elegant orchid is admired for its pure white petals and graceful appearance. Originating from Thailand, the Phalaenopsis Elegance is widely known as the 'Moth Orchid' due to its petal shape and is commonly grown in households.",
   },
@@ -34,6 +36,7 @@ export const Orchids = [
     color: "blue",
     origin: "Philippines",
     category: "Vanda",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "Known for its rare and vibrant blue color, the Vanda Blue Charm is an exotic orchid native to the Philippines. Its large, stunning flowers make it a highly sought-after plant in orchid collections worldwide.",
   },
@@ -47,6 +50,8 @@ export const Orchids = [
     color: "purple",
     origin: "Vietnam",
     category: "Dendrobium",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
+
     detail:
       "With its compact size and beautiful purple blooms, the Dendrobium Noble is a versatile orchid perfect for both indoor and outdoor environments. It thrives in warm, tropical climates and is widely grown in Vietnam.",
   },
@@ -60,6 +65,7 @@ export const Orchids = [
     color: "green",
     origin: "China",
     category: "Cymbidium",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "This unique orchid stands out with its fresh green color. Known for its hardiness, the Cymbidium Green Glow originates from China and is often used in floral arrangements due to its long-lasting nature and elegant presence.",
   },
@@ -73,6 +79,7 @@ export const Orchids = [
     color: "yellow",
     origin: "Brazil",
     category: "Oncidium",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "With bright yellow flowers, the Oncidium Shining Star is known for its cheerful appearance. Native to Brazil, this orchid is easy to care for and is commonly used in decorative displays, making it a favorite among gardeners.",
   },
@@ -86,6 +93,8 @@ export const Orchids = [
     color: "red",
     origin: "India",
     category: "Paphiopedilum",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
+
     detail:
       "Often referred to as the 'Lady Slipper Orchid', Paphiopedilum Venus is notable for its unique pouch-shaped petals. Originating from India, it is loved for its striking red flowers and is a prized addition to many collections.",
   },
@@ -99,6 +108,7 @@ export const Orchids = [
     color: "orange",
     origin: "Colombia",
     category: "Cattleya",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "The Cattleya Golden Sunset is admired for its bright orange flowers that evoke the beauty of a tropical sunset. Originating from Colombia, this orchid is often associated with warmth and happiness, making it a popular decorative plant.",
   },
@@ -112,6 +122,7 @@ export const Orchids = [
     color: "brown",
     origin: "Costa Rica",
     category: "Zygopetalum",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "Known for its distinct brown and purple blooms, the Zygopetalum Tropical Beauty is native to Costa Rica. This orchid thrives in humid environments and is popular for its exotic appearance and delightful fragrance.",
   },
@@ -125,6 +136,7 @@ export const Orchids = [
     color: "white",
     origin: "Mexico",
     category: "Maxillaria",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "Emitting a sweet coconut scent, the Maxillaria Coconut Delight is loved by orchid enthusiasts for its fragrance and delicate white blooms. Native to Mexico, this orchid brings a tropical essence to any setting.",
   },
@@ -138,6 +150,7 @@ export const Orchids = [
     color: "green",
     origin: "Ecuador",
     category: "Brassia",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "Known as the 'Spider Orchid' for its long, spindly petals, the Brassia Spider Star has a unique and captivating appearance. Originating from Ecuador, it is a favorite among collectors for its striking structure and greenish hues.",
   },
@@ -151,6 +164,7 @@ export const Orchids = [
     color: "pink",
     origin: "Mexico",
     category: "Laelia",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "With soft pink petals and a subtle fragrance, the Laelia Pink Paradise is a native of Mexico. It symbolizes love and beauty, often used in romantic bouquets.",
   },
@@ -164,6 +178,8 @@ export const Orchids = [
     color: "white",
     origin: "Malaysia",
     category: "Bulbophyllum",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
+
     detail:
       "An unusual and exotic orchid, the Bulbophyllum Medusae has long, tendril-like petals resembling the mythical Medusa. Native to Malaysia, it is favored by collectors for its bizarre yet fascinating appearance.",
   },
@@ -177,6 +193,8 @@ export const Orchids = [
     color: "white",
     origin: "Himalayas",
     category: "Coelogyne",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
+
     detail:
       "With pristine white blooms, Coelogyne Cristata is often associated with purity and serenity. Originating from the Himalayan region, it thrives in cool climates and is popular for its cascading flowers.",
   },
@@ -190,6 +208,7 @@ export const Orchids = [
     color: "pink",
     origin: "Brazil",
     category: "Miltonia",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "Miltonia Sunset boasts vibrant pink flowers with a golden center, resembling a tropical sunset. Native to Brazil, this orchid is loved for its beauty and is often grown in warm, humid environments.",
   },
@@ -203,6 +222,7 @@ export const Orchids = [
     color: "red",
     origin: "Peru",
     category: "Phragmipedium",
+    video: "https://www.youtube.com/embed/bhOEYjiBb7o?si=SFrWpSd4OtrgzLPs",
     detail:
       "A captivating orchid with fiery red flowers, the Phragmipedium Scarlet Flame is a rare beauty from Peru. Its striking color and exotic appearance make it highly desired by collectors.",
   },
