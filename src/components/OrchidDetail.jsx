@@ -46,115 +46,125 @@ export default function OrchidDetail() {
   }
 
   return (
-    <Container
-      maxWidth={false}
+    <Box
       sx={{
-        color: theme.text.primary,
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "calc(100vh - 64px - 56px)", // Adjust based on your header and footer heights
         bgcolor: theme.mainContent.backgroundColor,
-        py: 4,
+        color: theme.text.primary,
       }}
     >
-      <Button
-        onClick={() => navigate("/fer-lab1")}
-        variant='contained'
-        startIcon={<ArrowBackIcon />}
-        sx={{ mb: 3, backgroundColor: theme.button.primary }}
-      >
-        Back to List
-      </Button>
-      <Paper
-        elevation={3}
+      <Container
+        maxWidth={false}
         sx={{
-          overflow: "hidden",
-          borderRadius: 2,
-          backgroundColor: theme.mainContent.backgroundColor,
           color: theme.text.primary,
+          bgcolor: theme.mainContent.backgroundColor,
+          py: 4,
         }}
       >
-        <Grid container spacing={0}>
-          <Grid item xs={12} md={6}>
-            <AspectRatio ratio='4/3'>
-              <img
-                src={orchid.image}
-                alt={orchid.name}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  color: theme.text.primary,
-                }}
-              />
-            </AspectRatio>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Box sx={{ p: 3 }}>
-              <Typography variant='h4' component='h1' gutterBottom>
-                {orchid.name}
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-                <Rating
-                  name='read-only'
-                  value={orchid.rating}
-                  readOnly
-                  precision={0.5}
-                  emptyIcon={
-                    <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
-                  }
+        <Button
+          onClick={() => navigate("/fer-lab1")}
+          variant='contained'
+          startIcon={<ArrowBackIcon />}
+          sx={{ mb: 3, backgroundColor: theme.button.primary }}
+        >
+          Back to List
+        </Button>
+        <Paper
+          elevation={3}
+          sx={{
+            overflow: "hidden",
+            borderRadius: 2,
+            backgroundColor: theme.mainContent.backgroundColor,
+            color: theme.text.primary,
+          }}
+        >
+          <Grid container spacing={0}>
+            <Grid item xs={12} md={6}>
+              <AspectRatio ratio='4/3'>
+                <img
+                  src={orchid.image}
+                  alt={orchid.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    color: theme.text.primary,
+                  }}
                 />
-                <Typography variant='body1' sx={{ ml: 1 }}>
-                  ({orchid.rating}/5)
+              </AspectRatio>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Box sx={{ p: 3 }}>
+                <Typography variant='h4' component='h1' gutterBottom>
+                  {orchid.name}
                 </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                  <Rating
+                    name='read-only'
+                    value={orchid.rating}
+                    readOnly
+                    precision={0.5}
+                    emptyIcon={
+                      <StarIcon style={{ opacity: 0.55 }} fontSize='inherit' />
+                    }
+                  />
+                  <Typography variant='body1' sx={{ ml: 1 }}>
+                    ({orchid.rating}/5)
+                  </Typography>
+                </Box>
+                <Divider sx={{ my: 2 }} />
+                <Typography
+                  variant='body1'
+                  sx={{ mb: 2, display: "flex", alignItems: "center" }}
+                >
+                  <LocationOnIcon sx={{ mr: 1, color: theme.text.secondary }} />
+                  Origin:{" "}
+                  <Chip
+                    label={orchid.origin}
+                    sx={{ ml: 1, color: theme.icon.color }}
+                  />
+                </Typography>
+                <Typography
+                  variant='body1'
+                  sx={{ mb: 2, display: "flex", alignItems: "center" }}
+                >
+                  <CategoryIcon sx={{ mr: 1, color: theme.text.secondary }} />
+                  Category:{" "}
+                  <Chip
+                    label={orchid.category}
+                    sx={{ ml: 1, color: theme.icon.color }}
+                  />
+                </Typography>
+                <Typography
+                  variant='body1'
+                  sx={{ mb: 2, display: "flex", alignItems: "center" }}
+                >
+                  <ColorLensIcon sx={{ mr: 1, color: theme.text.secondary }} />
+                  Color:{" "}
+                  <Chip
+                    label={orchid.color}
+                    sx={{ ml: 1, color: theme.icon.color }}
+                  />
+                </Typography>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant='body1' paragraph>
+                  {orchid.detail}
+                </Typography>
+                {orchid.isSpecial && (
+                  <Chip
+                    icon={<StarIcon />}
+                    label='Special Orchid'
+                    color='warning'
+                    sx={{ mt: 2 }}
+                  />
+                )}
               </Box>
-              <Divider sx={{ my: 2 }} />
-              <Typography
-                variant='body1'
-                sx={{ mb: 2, display: "flex", alignItems: "center" }}
-              >
-                <LocationOnIcon sx={{ mr: 1, color: theme.text.secondary }} />
-                Origin:{" "}
-                <Chip
-                  label={orchid.origin}
-                  sx={{ ml: 1, color: theme.icon.color }}
-                />
-              </Typography>
-              <Typography
-                variant='body1'
-                sx={{ mb: 2, display: "flex", alignItems: "center" }}
-              >
-                <CategoryIcon sx={{ mr: 1, color: theme.text.secondary }} />
-                Category:{" "}
-                <Chip
-                  label={orchid.category}
-                  sx={{ ml: 1, color: theme.icon.color }}
-                />
-              </Typography>
-              <Typography
-                variant='body1'
-                sx={{ mb: 2, display: "flex", alignItems: "center" }}
-              >
-                <ColorLensIcon sx={{ mr: 1, color: theme.text.secondary }} />
-                Color:{" "}
-                <Chip
-                  label={orchid.color}
-                  sx={{ ml: 1, color: theme.icon.color }}
-                />
-              </Typography>
-              <Divider sx={{ my: 2 }} />
-              <Typography variant='body1' paragraph>
-                {orchid.detail}
-              </Typography>
-              {orchid.isSpecial && (
-                <Chip
-                  icon={<StarIcon />}
-                  label='Special Orchid'
-                  color='warning'
-                  sx={{ mt: 2 }}
-                />
-              )}
-            </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
