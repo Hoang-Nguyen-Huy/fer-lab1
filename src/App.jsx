@@ -7,6 +7,7 @@ import OrchidDetail from "./components/OrchidDetail";
 import SpecialOrchid from "./components/SpecialOrchid";
 import About from "./components/About";
 import Contact from "./components/Contact";
+import News from "./components/News";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/fer-lab1/' element={<Content />} />
         <Route path='/fer-lab1/natural' element={<SpecialOrchid />} />
         <Route path='/fer-lab1/:id' element={<OrchidDetail />}></Route>
+        <Route path='/fer-lab1/news' element={<News />}></Route>
         <Route path='/fer-lab1/about' element={<About />} />
         <Route path='/fer-lab1/contact' element={<Contact />} />
       </Routes>
