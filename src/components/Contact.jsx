@@ -52,6 +52,7 @@ export default function Contact() {
         minHeight: "100vh",
         backgroundColor: theme.mainContent.backgroundColor,
         color: theme.text.primary,
+        paddingTop: '8px'
       }}
     >
       <Container

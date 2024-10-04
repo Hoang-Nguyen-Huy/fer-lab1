@@ -20,6 +20,7 @@ export default function Content() {
         width: "100%",
         margin: "0 auto",
         backgroundColor: theme.mainContent.backgroundColor,
+        paddingTop: '36px'
       }}
     >
       {Orchids.map((orchid) => {

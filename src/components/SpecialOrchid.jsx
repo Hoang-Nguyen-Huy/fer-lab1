@@ -31,6 +31,7 @@ export default function SpecialOrchid() {
           width: "100%",
           margin: "0 auto",
           backgroundColor: theme.mainContent.backgroundColor,
+          paddingTop: "36px",
         }}
       >
         {specialOrchids.map((orchid) => {
