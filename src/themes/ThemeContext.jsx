@@ -6,10 +6,10 @@ const themes = {
       backgroundColor: "secondary",
     },
     mainContent: {
-      backgroundColor: "#242424",
+      backgroundColor: "black",
     },
     footer: {
-      backgroundColor: "#f4e0c1",
+      backgroundColor: "#242424",
     },
     text: {
       primary: "rgba(255, 255, 255, 0.87)",
