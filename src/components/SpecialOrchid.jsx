@@ -14,19 +14,13 @@ export default function SpecialOrchid() {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "calc(100vh - 64px - 56px)", // Adjust based on your header and footer heights
-        backgroundColor: theme.mainContent.backgroundColor,
+        width: "100%",
       }}
     >
       <Grid
         container
-        spacing={{ xs: 2, md: 3, lg: 4 }}
-        // columns={{ xs: 1, sm: 2, md: 3, lg: 4 }}
+        spacing={{ xs: 3, md: 4, lg: 4 }}
         sx={{
-          flexGrow: 1,
-          justifyContent: "center",
           padding: 2,
           width: "100%",
           margin: "0 auto",
@@ -36,7 +30,7 @@ export default function SpecialOrchid() {
       >
         {specialOrchids.map((orchid) => {
           return (
-            <Grid key={orchid.Id} size={{ xs: 1, sm: 3, md: 4 }}>
+            <Grid key={orchid.Id} item xs={12} sm={6} md={4}>
               <OrchidCard key={orchid.Id} orchid={orchid} />
             </Grid>
           );
