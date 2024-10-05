@@ -50,7 +50,7 @@ export const newsItems = [
     excerpt:
       "Scientists have developed a groundbreaking hybridization technique that could revolutionize orchid breeding, potentially creating more resilient and vibrant varieties.",
     image:
-      "https://bee-ma.world/wp-content/uploads/2024/09/Leonardo_Phoenix_A_serene_and_intimate_photograph_showcasing_O_1.jpg",
+      "https://images.contentstack.io/v3/assets/bltcedd8dbd5891265b/blte5a15471c01b5bf2/6668d7585cafe7232e8361e4/orchid-facts-hero.jpg",
     category: "Science",
     author: {
       name: "Dr. Alex Wong",
