@@ -45,7 +45,6 @@ export default function OrchidCard({ orchid }) {
       <MotionCard
         variant='outlined'
         sx={{
-          width: 320,
           bgcolor: theme.card.backgroundColor,
           color: theme.card.color,
           borderColor: theme.divider,
