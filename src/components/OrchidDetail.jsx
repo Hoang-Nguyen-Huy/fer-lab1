@@ -58,9 +58,10 @@ export default function OrchidDetail() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "calc(100vh - 64px - 56px)",
+        minHeight: "calc(100vh - 64px)",
         bgcolor: theme.mainContent.backgroundColor,
         color: theme.text.primary,
+        pt: { xs: 8, sm: 10 }, // Add top padding to create space below the header
       }}
     >
       <Container maxWidth='lg' sx={{ py: 4 }}>
@@ -90,6 +91,7 @@ export default function OrchidDetail() {
               borderRadius: 2,
               backgroundColor: theme.card.backgroundColor,
               color: theme.text.primary,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
             }}
           >
             <Grid container spacing={0}>
@@ -126,7 +128,12 @@ export default function OrchidDetail() {
               </Grid>
               <Grid item xs={12} md={6}>
                 <Box sx={{ p: 4 }}>
-                  <Typography variant='h4' component='h1' gutterBottom>
+                  <Typography
+                    variant='h4'
+                    component='h1'
+                    gutterBottom
+                    sx={{ fontWeight: "bold", color: theme.text.primary }}
+                  >
                     {orchid.name}
                   </Typography>
                   <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -142,7 +149,10 @@ export default function OrchidDetail() {
                         />
                       }
                     />
-                    <Typography variant='body1' sx={{ ml: 1 }}>
+                    <Typography
+                      variant='body1'
+                      sx={{ ml: 1, color: theme.text.secondary }}
+                    >
                       ({orchid.rating}/5)
                     </Typography>
                   </Box>
@@ -193,7 +203,11 @@ export default function OrchidDetail() {
                     />
                   </Typography>
                   <Divider sx={{ my: 2 }} />
-                  <Typography variant='body1' paragraph>
+                  <Typography
+                    variant='body1'
+                    paragraph
+                    sx={{ color: theme.text.secondary, lineHeight: 1.6 }}
+                  >
                     {orchid.detail}
                   </Typography>
                   {orchid.isSpecial && (

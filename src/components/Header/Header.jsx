@@ -26,7 +26,7 @@ const pages = [
 
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const { theme } = useContext(ThemeContext);
+  const { theme, light } = useContext(ThemeContext);
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
 
@@ -52,27 +52,50 @@ export default function Header() {
     setAnchorElNav(null);
   };
 
+  const getTextColor = () => {
+    if (light) {
+      return scrolled ? "white" : "#333333"; // Dark gray when not scrolled in light mode
+    }
+    return "white"; // Always white in dark mode
+  };
+
   return (
     <AppBar
-      position="fixed"
+      position='fixed'
       sx={{
-        backgroundColor: scrolled ? theme.header.backgroundColor : "transparent",
+        backgroundColor: scrolled
+          ? theme.header.backgroundColor
+          : "transparent",
         boxShadow: scrolled ? 3 : 0,
         transition: "all 0.3s ease-in-out",
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <motion.div
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <LocalFloristIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1, fontSize: 40 }} />
+            <LocalFloristIcon
+              sx={{
+                display: { xs: "none", md: "flex" },
+                mr: 1,
+                fontSize: 40,
+                color: getTextColor(),
+              }}
+            />
           </motion.div>
-          <Link to={`/fer-lab1/`} style={{ textDecoration: "none", display: "flex", alignItems: "center" }}>
+          <Link
+            to={`/fer-lab1/`}
+            style={{
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
             <Typography
-              variant="h6"
+              variant='h6'
               noWrap
               sx={{
                 mr: 2,
@@ -80,7 +103,7 @@ export default function Header() {
                 fontFamily: "Poppins, sans-serif",
                 fontWeight: 700,
                 letterSpacing: ".3rem",
-                color: "inherit",
+                color: getTextColor(),
                 textDecoration: "none",
               }}
             >
@@ -90,17 +113,17 @@ export default function Header() {
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{ color: getTextColor() }}
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: "bottom",
@@ -118,18 +141,30 @@ export default function Header() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu} component={Link} to={page.path}>
-                  <Typography textAlign="center">{page.name}</Typography>
+                <MenuItem
+                  key={page.name}
+                  onClick={handleCloseNavMenu}
+                  component={Link}
+                  to={page.path}
+                >
+                  <Typography textAlign='center'>{page.name}</Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <LocalFloristIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1, fontSize: 32 }} />
+          <LocalFloristIcon
+            sx={{
+              display: { xs: "flex", md: "none" },
+              mr: 1,
+              fontSize: 32,
+              color: getTextColor(),
+            }}
+          />
           <Typography
-            variant="h5"
+            variant='h5'
             noWrap
             component={Link}
-            to="/fer-lab1/"
+            to='/fer-lab1/'
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -137,13 +172,19 @@ export default function Header() {
               fontFamily: "Poppins, sans-serif",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: getTextColor(),
               textDecoration: "none",
             }}
           >
             ORCHID HAVEN
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, justifyContent: "center" }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
             {pages.map((page) => (
               <Button
                 key={page.name}
@@ -153,7 +194,7 @@ export default function Header() {
                 sx={{
                   my: 2,
                   mx: 1,
-                  color: "white",
+                  color: getTextColor(),
                   display: "block",
                   fontFamily: "Poppins, sans-serif",
                   fontWeight: 500,
@@ -165,8 +206,11 @@ export default function Header() {
                     height: "2px",
                     bottom: 0,
                     left: 0,
-                    backgroundColor: "white",
-                    transform: location.pathname === page.path ? "scaleX(1)" : "scaleX(0)",
+                    backgroundColor: getTextColor(),
+                    transform:
+                      location.pathname === page.path
+                        ? "scaleX(1)"
+                        : "scaleX(0)",
                     transition: "transform 0.3s ease-in-out",
                   },
                   "&:hover::after": {

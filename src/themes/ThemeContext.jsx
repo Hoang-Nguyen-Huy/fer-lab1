@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const themes = {
   dark: {
     header: {
-      backgroundColor: "secondary",
+      backgroundColor: "rgba(81, 45, 168, 0.9)",
     },
     mainContent: {
       backgroundColor: "black",
@@ -48,7 +48,7 @@ const themes = {
   },
   light: {
     header: {
-      backgroundColor: "primary",
+      backgroundColor: "rgba(156, 39, 176, 0.8)",
     },
     mainContent: {
       backgroundColor: "#f3e5f5",
