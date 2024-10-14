@@ -24,6 +24,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { ThemeContext } from "../themes/ThemeContext";
 import { AspectRatio } from "@mui/joy";
 import { motion } from "framer-motion";
+import { RelatedOrchidsSlider } from "./RelatedOrchidSlider";
 
 const MotionBox = motion(Box);
 
@@ -223,6 +224,8 @@ export default function OrchidDetail() {
             </Grid>
           </Paper>
         </MotionBox>
+
+        <RelatedOrchidsSlider currentOrchid={orchid} theme={theme} />
       </Container>
 
       <Modal
