@@ -1,4 +1,5 @@
 export const getContinent = (origin) => {
+  // to take continents to get related orchid
   const continents = {
     Asia: [
       "China",
