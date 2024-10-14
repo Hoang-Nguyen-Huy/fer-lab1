@@ -9,7 +9,6 @@ import { Box } from "@mui/material";
 export default function SpecialOrchid() {
   const { theme } = useContext(ThemeContext);
 
-  //Filter orchids to only include special ones
   const specialOrchids = Orchids.filter((orchid) => orchid.isSpecial);
   return (
     <Box
