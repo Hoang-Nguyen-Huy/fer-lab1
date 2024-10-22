@@ -189,6 +189,7 @@ export default function Header() {
                   color: theme.card.color,
                 },
               }}
+              disableScrollLock={true}
             >
               {pages.map((page) => (
                 <MenuItem
@@ -347,6 +348,7 @@ export default function Header() {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              disableScrollLock={true}
             >
               {settings.map((setting) => (
                 <MenuItem
