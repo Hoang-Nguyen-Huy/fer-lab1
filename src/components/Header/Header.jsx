@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useContext, useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -14,7 +13,8 @@ import MenuItem from "@mui/material/MenuItem";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import ToggleThemeButton from "../Button/ToggleThemeButton";
 import { ThemeContext } from "../../themes/ThemeContext";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import LoginIcon from "@mui/icons-material/Login";
 
 const pages = [
   { name: "Home", path: "/fer-lab1/" },
@@ -57,6 +57,10 @@ export default function Header() {
       return scrolled ? "white" : "#333333"; // Dark gray when not scrolled in light mode
     }
     return "white"; // Always white in dark mode
+  };
+
+  const handleLogin = () => {
+    console.log("Login clicked");
   };
 
   return (
@@ -150,6 +154,9 @@ export default function Header() {
                   <Typography textAlign='center'>{page.name}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleLogin}>
+                <Typography textAlign='center'>Login</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <LocalFloristIcon
@@ -223,7 +230,25 @@ export default function Header() {
             ))}
           </Box>
 
-          <ToggleThemeButton />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Button
+              variant='outlined'
+              startIcon={<LoginIcon />}
+              onClick={handleLogin}
+              sx={{
+                color: getTextColor(),
+                borderColor: getTextColor(),
+                "&:hover": {
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                },
+                mr: 2,
+                display: { xs: "none", md: "flex" },
+              }}
+            >
+              Login
+            </Button>
+            <ToggleThemeButton />
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>
