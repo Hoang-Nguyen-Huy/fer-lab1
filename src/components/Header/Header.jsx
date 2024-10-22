@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,11 +13,14 @@ import MenuItem from "@mui/material/MenuItem";
 import LocalFloristIcon from "@mui/icons-material/LocalFlorist";
 import ToggleThemeButton from "../Button/ToggleThemeButton";
 import { ThemeContext } from "../../themes/ThemeContext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PersonIcon from "@mui/icons-material/Person";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import Avatar from "@mui/material/Avatar";
 import { UserAuth } from "../../context/AuthContext";
+import { Tooltip } from "@mui/material";
 
 const pages = [
   { name: "Home", path: "/fer-lab1/" },
@@ -25,6 +28,12 @@ const pages = [
   { name: "News", path: "/fer-lab1/news" },
   { name: "About", path: "/fer-lab1/about" },
   { name: "Contact", path: "/fer-lab1/contact" },
+];
+
+const settings = [
+  { name: "Profile", icon: <PersonIcon /> },
+  { name: "Dashboard", icon: <DashboardIcon /> },
+  { name: "Logout", icon: <LogoutIcon /> },
 ];
 
 export default function Header() {
@@ -35,19 +44,19 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const { googleSignIn, user, logOut } = UserAuth();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
-    };
-
-    document.addEventListener("scroll", handleScroll);
-    return () => {
-      document.removeEventListener("scroll", handleScroll);
-    };
+  const handleScroll = useCallback(() => {
+    const isScrolled = window.scrollY > 10;
+    if (isScrolled !== scrolled) {
+      setScrolled(isScrolled);
+    }
   }, [scrolled]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -83,9 +92,17 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await logOut();
+      handleCloseUserMenu();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleSettingClick = (setting) => {
+    if (setting === "Logout") {
+      handleLogout();
+    }
+    handleCloseUserMenu();
   };
 
   return (
@@ -167,6 +184,10 @@ export default function Header() {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: "block", md: "none" },
+                "& .MuiPaper-root": {
+                  backgroundColor: theme.card.backgroundColor,
+                  color: theme.card.color,
+                },
               }}
             >
               {pages.map((page) => (
@@ -257,57 +278,86 @@ export default function Header() {
             ))}
           </Box>
 
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            {!user ? (
-              <Button
-                variant='outlined'
-                startIcon={<LoginIcon />}
-                onClick={handleLogin}
-                sx={{
-                  color: getTextColor(),
-                  borderColor: getTextColor(),
-                  "&:hover": {
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  },
-                  mr: 2,
-                  display: { xs: "none", md: "flex" },
-                }}
-              >
-                Login
-              </Button>
-            ) : (
-              <Box sx={{ flexGrow: 0 }}>
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={user.displayName} src={user.photoURL} />
-                </IconButton>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id='menu-appbar'
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <AnimatePresence>
+              {!user ? (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign='center'>
-                      {user.displayName}
-                    </Typography>
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>
-                    <LogoutIcon sx={{ mr: 1 }} />
-                    <Typography textAlign='center'>Logout</Typography>
-                  </MenuItem>
-                </Menu>
-              </Box>
-            )}
+                  <Button
+                    variant='outlined'
+                    startIcon={<LoginIcon />}
+                    onClick={handleLogin}
+                    sx={{
+                      color: getTextColor(),
+                      borderColor: getTextColor(),
+                      "&:hover": {
+                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      },
+                      display: { xs: "none", md: "flex" },
+                    }}
+                  >
+                    Login
+                  </Button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Tooltip title='Open settings'>
+                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                      <Avatar
+                        alt={user.displayName}
+                        src={user.photoURL}
+                        sx={{
+                          width: 40,
+                          height: 40,
+                          border: `2px solid ${getTextColor()}`,
+                        }}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <Menu
+              sx={{
+                mt: "45px",
+                "& .MuiPaper-root": {
+                  backgroundColor: theme.card.backgroundColor,
+                  color: theme.card.color,
+                },
+              }}
+              id='menu-appbar'
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem
+                  key={setting.name}
+                  onClick={() => handleSettingClick(setting.name)}
+                >
+                  {setting.icon}
+                  <Typography sx={{ ml: 1 }}>{setting.name}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
             <ToggleThemeButton />
           </Box>
         </Toolbar>

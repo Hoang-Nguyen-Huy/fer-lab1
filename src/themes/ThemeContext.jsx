@@ -102,6 +102,7 @@ const initialState = {
 
 const ThemeContext = React.createContext(initialState);
 
+// eslint-disable-next-line react/prop-types
 function ThemeProvider({ children }) {
   const [light, setLight] = useState(false);
 
