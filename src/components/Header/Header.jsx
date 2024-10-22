@@ -31,8 +31,12 @@ const pages = [
 ];
 
 const settings = [
-  { name: "Profile", icon: <PersonIcon /> },
-  { name: "Dashboard", icon: <DashboardIcon /> },
+  { name: "Profile", icon: <PersonIcon />, path: "/fer-lab1/profile" },
+  {
+    name: "Dashboard",
+    icon: <DashboardIcon />,
+    path: "/fer-lab1/orchid-management",
+  },
   { name: "Logout", icon: <LogoutIcon /> },
 ];
 
@@ -354,6 +358,7 @@ export default function Header() {
                 <MenuItem
                   key={setting.name}
                   onClick={() => handleSettingClick(setting.name)}
+                  to={setting.path}
                 >
                   {setting.icon}
                   <Typography sx={{ ml: 1 }}>{setting.name}</Typography>
