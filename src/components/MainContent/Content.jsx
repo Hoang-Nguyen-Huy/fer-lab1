@@ -3,21 +3,22 @@ import OrchidCard from "./OrchidCard";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../themes/ThemeContext";
 import { Box } from "@mui/material";
+import { getAllOrchids } from "../../apis/OrchidApi";
 
 export default function Content() {
   const { theme } = useContext(ThemeContext);
   const [api, setApi] = useState([]);
-  const baseUrl = `https://670f54e33e71518616575e20.mockapi.io/orchids-lab`;
-  const fetchAPI = () => {
-    fetch(baseUrl + "?sortBy=Id&order=desc")
-      .then((resp) => resp.json())
-      .then((data) => setApi(data))
-      .catch((err) => console.error(err));
-  };
-
   useEffect(() => {
-    fetchAPI();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const fetchOrchids = async () => {
+      try {
+        const data = await getAllOrchids();
+        setApi(data);
+      } catch (error) {
+        console.error("Failed to fetch orchids:", error);
+      }
+    };
+
+    fetchOrchids();
   }, []);
 
   return (
