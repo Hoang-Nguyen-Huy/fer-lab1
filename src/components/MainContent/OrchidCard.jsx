@@ -1,4 +1,4 @@
-import * as React from "react";
+/* eslint-disable react/prop-types */
 import AspectRatio from "@mui/joy/AspectRatio";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
@@ -15,19 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { ThemeContext } from "../../themes/ThemeContext";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "black",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-  color: "white",
-};
 
 const MotionCard = motion(Card);
 
@@ -123,7 +110,7 @@ export default function OrchidCard({ orchid }) {
             orientation='horizontal'
             sx={{ justifyContent: "space-between" }}
           >
-            <Rating name='read-only' value={orchid.rating} readOnly />
+            <Rating name='read-only' value={Number(orchid.rating)} readOnly />
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
               <Button
                 variant='outlined'

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { ThemeContext } from '../../themes/ThemeContext'
 import { styled } from '@mui/material/styles'
 import Switch from '@mui/material/Switch'

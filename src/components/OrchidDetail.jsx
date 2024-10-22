@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
@@ -13,7 +13,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { Grid } from "@mui/joy";
-import { Orchids } from "../ListOfOrchids";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import CategoryIcon from "@mui/icons-material/Category";
 import ColorLensIcon from "@mui/icons-material/ColorLens";
@@ -25,17 +24,31 @@ import { ThemeContext } from "../themes/ThemeContext";
 import { AspectRatio } from "@mui/joy";
 import { motion } from "framer-motion";
 import { RelatedOrchidsSlider } from "./RelatedOrchidSlider";
+import { getOrchidById } from "../apis/OrchidApi";
 
 const MotionBox = motion(Box);
 
 export default function OrchidDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const orchid = Orchids.find((o) => o.Id === id);
+  const [api, setApi] = useState({});
   const { theme } = useContext(ThemeContext);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
-  if (!orchid) {
+  useEffect(() => {
+    const fetchOrchids = async () => {
+      try {
+        const data = await getOrchidById(id);
+        setApi(data);
+      } catch (error) {
+        console.error("Failed to fetch orchids:", error);
+      }
+    };
+
+    fetchOrchids();
+  }, [id]);
+
+  if (!api) {
     return (
       <Container
         maxWidth='lg'
@@ -100,8 +113,8 @@ export default function OrchidDetail() {
                 <Box sx={{ position: "relative" }}>
                   <AspectRatio ratio='4/3'>
                     <img
-                      src={orchid.image}
-                      alt={orchid.name}
+                      src={api.image}
+                      alt={api.name}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -135,12 +148,12 @@ export default function OrchidDetail() {
                     gutterBottom
                     sx={{ fontWeight: "bold", color: theme.text.primary }}
                   >
-                    {orchid.name}
+                    {api.name}
                   </Typography>
                   <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                     <Rating
                       name='read-only'
-                      value={orchid.rating}
+                      value={Number(api.rating)}
                       readOnly
                       precision={0.5}
                       emptyIcon={
@@ -154,7 +167,7 @@ export default function OrchidDetail() {
                       variant='body1'
                       sx={{ ml: 1, color: theme.text.secondary }}
                     >
-                      ({orchid.rating}/5)
+                      ({api.rating}/5)
                     </Typography>
                   </Box>
                   <Divider sx={{ my: 2 }} />
@@ -165,7 +178,7 @@ export default function OrchidDetail() {
                     <LocationOnIcon sx={{ mr: 1, color: theme.icon.color }} />
                     Origin:{" "}
                     <Chip
-                      label={orchid.origin}
+                      label={api.origin}
                       sx={{
                         ml: 1,
                         backgroundColor: theme.chip.backgroundColor,
@@ -180,7 +193,7 @@ export default function OrchidDetail() {
                     <CategoryIcon sx={{ mr: 1, color: theme.icon.color }} />
                     Category:{" "}
                     <Chip
-                      label={orchid.category}
+                      label={api.category}
                       sx={{
                         ml: 1,
                         backgroundColor: theme.chip.backgroundColor,
@@ -195,7 +208,7 @@ export default function OrchidDetail() {
                     <ColorLensIcon sx={{ mr: 1, color: theme.icon.color }} />
                     Color:{" "}
                     <Chip
-                      label={orchid.color}
+                      label={api.color}
                       sx={{
                         ml: 1,
                         backgroundColor: theme.chip.backgroundColor,
@@ -209,9 +222,9 @@ export default function OrchidDetail() {
                     paragraph
                     sx={{ color: theme.text.secondary, lineHeight: 1.6 }}
                   >
-                    {orchid.detail}
+                    {api.detail}
                   </Typography>
-                  {orchid.isSpecial && (
+                  {api.isSpecial && (
                     <Chip
                       icon={<StarIcon />}
                       label='Special Orchid'
@@ -225,7 +238,7 @@ export default function OrchidDetail() {
           </Paper>
         </MotionBox>
 
-        <RelatedOrchidsSlider currentOrchid={orchid} theme={theme} />
+        <RelatedOrchidsSlider currentOrchid={api} theme={theme} />
       </Container>
 
       <Modal
@@ -260,8 +273,8 @@ export default function OrchidDetail() {
             <iframe
               width='100%'
               height='100%'
-              src={orchid.video}
-              title={orchid.name}
+              src={api.video}
+              title={api.name}
               allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
               allowFullScreen
             ></iframe>

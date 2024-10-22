@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function useModal({ orchid }) {
+export default function useModal() {
   const [isVisible, setIsVisible] = useState(false);
   const [detail, setDetail] = useState(null);
 
