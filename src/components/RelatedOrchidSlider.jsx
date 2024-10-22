@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable react/no-unknown-property */
+/* eslint-disable react/prop-types */
 import Slider from "react-slick";
 import { getContinent } from "../Continent";
 import { Orchids } from "../ListOfOrchids";
