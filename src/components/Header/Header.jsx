@@ -15,6 +15,9 @@ import ToggleThemeButton from "../Button/ToggleThemeButton";
 import { ThemeContext } from "../../themes/ThemeContext";
 import { motion } from "framer-motion";
 import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Avatar from "@mui/material/Avatar";
+import { UserAuth } from "../../context/AuthContext";
 
 const pages = [
   { name: "Home", path: "/fer-lab1/" },
@@ -26,9 +29,11 @@ const pages = [
 
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
   const { theme, light } = useContext(ThemeContext);
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const { googleSignIn, user, logOut } = UserAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,19 +53,39 @@ export default function Header() {
     setAnchorElNav(event.currentTarget);
   };
 
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const getTextColor = () => {
-    if (light) {
-      return scrolled ? "white" : "#333333"; // Dark gray when not scrolled in light mode
-    }
-    return "white"; // Always white in dark mode
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
   };
 
-  const handleLogin = () => {
-    console.log("Login clicked");
+  const getTextColor = () => {
+    if (light) {
+      return scrolled ? "white" : "#333333";
+    }
+    return "white";
+  };
+
+  const handleLogin = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -154,9 +179,11 @@ export default function Header() {
                   <Typography textAlign='center'>{page.name}</Typography>
                 </MenuItem>
               ))}
-              <MenuItem onClick={handleLogin}>
-                <Typography textAlign='center'>Login</Typography>
-              </MenuItem>
+              {!user && (
+                <MenuItem onClick={handleLogin}>
+                  <Typography textAlign='center'>Login</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
           <LocalFloristIcon
@@ -231,22 +258,56 @@ export default function Header() {
           </Box>
 
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Button
-              variant='outlined'
-              startIcon={<LoginIcon />}
-              onClick={handleLogin}
-              sx={{
-                color: getTextColor(),
-                borderColor: getTextColor(),
-                "&:hover": {
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                },
-                mr: 2,
-                display: { xs: "none", md: "flex" },
-              }}
-            >
-              Login
-            </Button>
+            {!user ? (
+              <Button
+                variant='outlined'
+                startIcon={<LoginIcon />}
+                onClick={handleLogin}
+                sx={{
+                  color: getTextColor(),
+                  borderColor: getTextColor(),
+                  "&:hover": {
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  },
+                  mr: 2,
+                  display: { xs: "none", md: "flex" },
+                }}
+              >
+                Login
+              </Button>
+            ) : (
+              <Box sx={{ flexGrow: 0 }}>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={user.displayName} src={user.photoURL} />
+                </IconButton>
+                <Menu
+                  sx={{ mt: "45px" }}
+                  id='menu-appbar'
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign='center'>
+                      {user.displayName}
+                    </Typography>
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <LogoutIcon sx={{ mr: 1 }} />
+                    <Typography textAlign='center'>Logout</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
+            )}
             <ToggleThemeButton />
           </Box>
         </Toolbar>
