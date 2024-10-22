@@ -3,7 +3,7 @@ import OrchidCard from "./OrchidCard";
 import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../../themes/ThemeContext";
 import { Box } from "@mui/material";
-import { getAllOrchids } from "../../apis/OrchidApi";
+import { getAllOrchids } from "../../apis/OrchidsApi";
 
 export default function Content() {
   const { theme } = useContext(ThemeContext);

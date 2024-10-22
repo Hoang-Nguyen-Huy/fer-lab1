@@ -24,7 +24,7 @@ import { ThemeContext } from "../themes/ThemeContext";
 import { AspectRatio } from "@mui/joy";
 import { motion } from "framer-motion";
 import { RelatedOrchidsSlider } from "./RelatedOrchidSlider";
-import { getOrchidById } from "../apis/OrchidApi";
+import { getOrchidById } from "../apis/OrchidsApi";
 
 const MotionBox = motion(Box);
 
