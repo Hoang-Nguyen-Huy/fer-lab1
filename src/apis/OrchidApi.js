@@ -1,4 +1,4 @@
-const baseUrl = `https://670f54e33e71518616575e20.mockapi.io/orchids-lab`;
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export const getAllOrchids = async () => {
   try {
