@@ -25,3 +25,17 @@ export const getSpecialOrchids = async () => {
     throw error;
   }
 };
+
+export const getOrchidById = async (id) => {
+  try {
+    const response = await fetch(`${baseUrl}?Id=${id}`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    return data[0];
+  } catch (error) {
+    console.error("Error fetching orchids:", error);
+    throw error;
+  }
+};
