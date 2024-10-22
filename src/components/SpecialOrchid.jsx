@@ -1,15 +1,26 @@
 import { Grid } from "@mui/joy";
-import React from "react";
-import { Orchids } from "../ListOfOrchids";
 import OrchidCard from "./MainContent/OrchidCard";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../themes/ThemeContext";
 import { Box } from "@mui/material";
+import { getSpecialOrchids } from "../apis/OrchidApi";
 
 export default function SpecialOrchid() {
   const { theme } = useContext(ThemeContext);
+  const [api, setApi] = useState([]);
+  useEffect(() => {
+    const fetchOrchids = async () => {
+      try {
+        const data = await getSpecialOrchids();
+        setApi(data);
+      } catch (error) {
+        console.error("Failed to fetch orchids:", error);
+      }
+    };
 
-  const specialOrchids = Orchids.filter((orchid) => orchid.isSpecial);
+    fetchOrchids();
+  }, []);
+
   return (
     <Box
       sx={{
@@ -27,7 +38,7 @@ export default function SpecialOrchid() {
           paddingTop: "36px",
         }}
       >
-        {specialOrchids.map((orchid) => {
+        {api.map((orchid) => {
           return (
             <Grid key={orchid.Id} item xs={12} sm={6} md={4}>
               <OrchidCard key={orchid.Id} orchid={orchid} />
