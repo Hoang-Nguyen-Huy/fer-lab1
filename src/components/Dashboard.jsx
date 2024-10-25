@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
-import { createOrchid, getAllOrchids } from "../apis/OrchidsApi";
+import { createOrchid, deleteOrchid, getAllOrchids } from "../apis/OrchidsApi";
 import {
   MoreVert as MoreVertIcon,
   Add as AddIcon,
@@ -88,9 +88,14 @@ export default function Dashboard() {
     handleMenuClose();
   };
 
-  const handleDelete = () => {
-    console.log("Delete", selectedOrchid);
-    handleMenuClose();
+  const handleDelete = async () => {
+    try {
+      await deleteOrchid(selectedOrchid.Id);
+      await fetchOrchids();
+      handleMenuClose();
+    } catch (error) {
+      console.error("Error deleting orchid: ", error);
+    }
   };
 
   const handleAddOrchid = () => {
