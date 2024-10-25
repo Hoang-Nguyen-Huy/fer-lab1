@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
-import { getAllOrchids } from "../apis/OrchidsApi";
+import { createOrchid, getAllOrchids } from "../apis/OrchidsApi";
 import {
   MoreVert as MoreVertIcon,
   Add as AddIcon,
@@ -29,6 +29,8 @@ import {
 } from "@mui/icons-material";
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -38,6 +40,7 @@ const validationSchema = Yup.object().shape({
   origin: Yup.string().required("Origin is required"),
   category: Yup.string().required("Category is required"),
   detail: Yup.string().required("Detail is required"),
+  video: Yup.string().nullable(),
 });
 
 export default function Dashboard() {
@@ -94,6 +97,31 @@ export default function Dashboard() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+  };
+
+  const handleCreateOrchid = async (values, { setSubmitting, resetForm }) => {
+    try {
+      let imageUrl = "";
+      if (values.image) {
+        const storageRef = ref(storage, `orchid-images/${values.image.name}`);
+        await uploadBytes(storageRef, values.image);
+        imageUrl = await getDownloadURL(storageRef);
+      }
+
+      const newOrchid = {
+        ...values,
+        image: imageUrl,
+      };
+
+      await createOrchid(newOrchid);
+      await fetchOrchids();
+      resetForm();
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error("Error creating orchid:", error);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const columns = [
@@ -339,7 +367,11 @@ export default function Dashboard() {
         <MenuItem onClick={handleUpdate}>Update</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
-      <Modal open={isModalOpen} onClose={handleCloseModal}>
+      <Modal
+        open={isModalOpen}
+        onClose={handleCloseModal}
+        disableScrollLock={true}
+      >
         <Box
           sx={{
             position: "absolute",
@@ -365,10 +397,11 @@ export default function Dashboard() {
               origin: "",
               category: "",
               detail: "",
+              video: "",
               image: null,
             }}
             validationSchema={validationSchema}
-            // onSubmit={handleCreateOrchid}
+            onSubmit={handleCreateOrchid}
           >
             {({ errors, touched, setFieldValue, isSubmitting }) => (
               <Form>
@@ -392,10 +425,10 @@ export default function Dashboard() {
                   helperText={touched.rating && errors.rating}
                 />
                 <FormControlLabel
+                  label='Special Orchid'
                   control={
                     <Field as={Switch} name='isSpecial' color='primary' />
                   }
-                  label='Special Orchid'
                 />
                 <Field
                   as={TextField}
@@ -428,6 +461,17 @@ export default function Dashboard() {
                   as={TextField}
                   name='detail'
                   label='Detail'
+                  fullWidth
+                  multiline
+                  rows={4}
+                  margin='normal'
+                  error={touched.detail && errors.detail}
+                  helperText={touched.detail && errors.detail}
+                />
+                <Field
+                  as={TextField}
+                  name='video'
+                  label='Video Url'
                   fullWidth
                   multiline
                   rows={4}
