@@ -8,15 +8,24 @@ import {
   Typography,
   Button,
   Chip,
+  useTheme,
+  useMediaQuery,
+  alpha,
+  Rating,
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
 import { getAllOrchids } from "../apis/OrchidsApi";
-import { MoreVert as MoreVertIcon, Add as AddIcon } from "@mui/icons-material";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import {
+  MoreVert as MoreVertIcon,
+  Add as AddIcon,
+  AutoAwesome as AutoAwesomeIcon,
+} from "@mui/icons-material";
 
 export default function Dashboard() {
   const { theme } = useContext(ThemeContext);
+  const muiTheme = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("sm"));
   const [orchids, setOrchids] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOrchid, setSelectedOrchid] = useState(null);
@@ -66,25 +75,46 @@ export default function Dashboard() {
 
   const columns = [
     { field: "index", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Orchid name", width: 100 },
-    { field: "rating", headerName: "Rating", width: 100, type: "number" },
+    { field: "name", headerName: "Orchid name", width: 130, flex: 0.5 },
+    {
+      field: "rating",
+      headerName: "Rating",
+      width: 140,
+      renderCell: (params) => (
+        <Box>
+          <Rating name='read-only' value={Number(params.value)} readOnly />
+        </Box>
+      ),
+    },
     {
       field: "isSpecial",
       headerName: "Special Orchid",
-      type: "boolean",
-      width: 130,
+      width: 150,
       renderCell: (params) =>
-        params.value ? (
+        params.value === "true" ? (
           <Chip
-            icon={AutoAwesomeIcon}
+            icon={<AutoAwesomeIcon />}
+            label='Special'
+            size='small'
             sx={{
-              ml: 1,
-              backgroundColor: theme.chip.backgroundColor,
+              backgroundColor: alpha(theme.chip.backgroundColor, 0.1),
               color: theme.chip.color,
+              borderColor: theme.chip.borderColor,
+              "& .MuiChip-icon": {
+                color: theme.icon.color,
+              },
             }}
           />
         ) : (
-          <p>Noraml</p>
+          <Chip
+            label='Normal'
+            size='small'
+            variant='outlined'
+            sx={{
+              borderColor: alpha(theme.chip.borderColor, 0.5),
+              color: theme.text.secondary,
+            }}
+          />
         ),
     },
     {
@@ -96,10 +126,10 @@ export default function Dashboard() {
           src={params.value}
           alt={`${params.row.name} orchid`}
           style={{
-            width: 50,
-            height: 50,
+            width: "100%",
+            height: "100%",
             objectFit: "cover",
-            borderRadius: "50%",
+            borderRadius: "6px",
           }}
         />
       ),
@@ -137,6 +167,7 @@ export default function Dashboard() {
         <IconButton
           onClick={(event) => handleMenuOpen(event, params.row)}
           size='small'
+          sx={{ color: theme.icon.color }}
         >
           <MoreVertIcon />
         </IconButton>
@@ -152,33 +183,49 @@ export default function Dashboard() {
         minHeight: "calc(100vh - 64px)", // Adjust based on your AppBar height
         backgroundColor: theme.mainContent.backgroundColor,
         color: theme.text.primary,
-        padding: "68px",
+        padding: isMobile ? "16px" : "68px",
       }}
     >
       <Paper
         elevation={3}
         sx={{
-          padding: "24px",
+          padding: isMobile ? "16px" : "24px",
           borderRadius: "12px",
           backgroundColor: theme.card.backgroundColor,
+          color: theme.card.color,
+          boxShadow: theme.elevation[3],
         }}
       >
         <Box
           sx={{
             display: "flex",
+            flexDirection: isMobile ? "column" : "row",
             justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "16px",
+            alignItems: isMobile ? "flex-start" : "center",
+            marginBottom: "24px",
           }}
         >
-          <Typography variant='h4' component='h1' gutterBottom>
+          <Typography
+            variant='h4'
+            component='h1'
+            gutterBottom
+            sx={{ fontWeight: "bold", color: theme.text.primary }}
+          >
             Orchid Management
           </Typography>
           <Button
             variant='contained'
-            color='primary'
             startIcon={<AddIcon />}
             onClick={handleAddOrchid}
+            sx={{
+              backgroundColor: theme.button.primary,
+              color: theme.text.primary,
+              "&:hover": {
+                backgroundColor: theme.button.hover,
+              },
+              marginTop: isMobile ? 2 : 0,
+              boxShadow: theme.elevation[1],
+            }}
           >
             Add Orchid
           </Button>
@@ -196,17 +243,60 @@ export default function Dashboard() {
           checkboxSelection
           disableRowSelectionOnClick
           sx={{
-            border: 0,
+            border: `1px solid ${theme.divider}`,
             borderRadius: "8px",
+            "& .MuiDataGrid-root": {
+              backgroundColor: alpha(theme.card.backgroundColor, 0.6),
+              color: theme.text.primary,
+            },
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: alpha(theme.header.backgroundColor, 0.8),
+              color: theme.text.primary,
+              borderBottom: `2px solid ${theme.divider}`,
+            },
+            "& .MuiDataGrid-cell": {
+              borderBottom: `1px solid ${alpha(theme.divider, 0.3)}`,
+            },
             "& .MuiDataGrid-cell:focus": {
               outline: "none",
             },
             "& .MuiDataGrid-row:hover": {
-              backgroundColor: theme.card.hoverBackgroundColor,
+              backgroundColor: alpha(theme.action.hover, 0.1),
+            },
+            "& .MuiDataGrid-footer": {
+              backgroundColor: alpha(theme.card.backgroundColor, 0.8),
+              color: theme.text.secondary,
+              borderTop: `1px solid ${theme.divider}`,
+            },
+            "& .MuiTablePagination-root": {
+              color: theme.text.secondary,
+            },
+            "& .MuiButtonBase-root": {
+              color: theme.text.primary,
+            },
+            "& .MuiCheckbox-root": {
+              color: theme.icon.color,
+            },
+            "& .MuiDataGrid-columnSeparator": {
+              color: theme.divider,
             },
           }}
           components={{
             Toolbar: GridToolbar,
+          }}
+          componentsProps={{
+            toolbar: {
+              sx: {
+                color: theme.text.primary,
+                "& .MuiButton-root": {
+                  color: theme.text.primary,
+                },
+                "& .MuiInputBase-root": {
+                  color: theme.text.primary,
+                  borderColor: theme.divider,
+                },
+              },
+            },
           }}
         />
       </Paper>
@@ -215,6 +305,13 @@ export default function Dashboard() {
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
         disableScrollLock={true}
+        PaperProps={{
+          sx: {
+            backgroundColor: theme.card.backgroundColor,
+            color: theme.text.primary,
+            boxShadow: theme.elevation[2],
+          },
+        }}
       >
         <MenuItem onClick={handleUpdate}>Update</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
