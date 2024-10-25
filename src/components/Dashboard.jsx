@@ -14,9 +14,10 @@ import {
   Rating,
   Modal,
   TextField,
-  FormControlLabel,
   Switch,
   CircularProgress,
+  FormControl,
+  Select,
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
@@ -27,12 +28,13 @@ import {
   AutoAwesome as AutoAwesomeIcon,
   CloudUpload as CloudUploadIcon,
 } from "@mui/icons-material";
-import { Field, Form, Formik } from "formik";
+import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
+import { categories } from "../OrchidCategory";
 
-const validationSchema = Yup.object().shape({
+const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
   rating: Yup.number().min(0).max(5).required("Rating is required"),
   isSpecial: Yup.boolean(),
@@ -99,30 +101,44 @@ export default function Dashboard() {
     setIsModalOpen(false);
   };
 
-  const handleCreateOrchid = async (values, { setSubmitting, resetForm }) => {
-    try {
-      let imageUrl = "";
-      if (values.image) {
-        const storageRef = ref(storage, `orchid-images/${values.image.name}`);
-        await uploadBytes(storageRef, values.image);
-        imageUrl = await getDownloadURL(storageRef);
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      rating: 0,
+      isSpecial: false,
+      color: "",
+      origin: "",
+      category: "",
+      detail: "",
+      video: "",
+      image: null,
+    },
+    onSubmit: async (orchid, { setSubmitting, resetForm }) => {
+      try {
+        let imageUrl = "";
+        if (orchid.image) {
+          const storageRef = ref(storage, `orchid-images/${orchid.image.name}`);
+          await uploadBytes(storageRef, orchid.image);
+          imageUrl = await getDownloadURL(storageRef);
+        }
+
+        const newOrchid = {
+          ...orchid,
+          image: imageUrl,
+        };
+
+        await createOrchid(newOrchid);
+        await fetchOrchids();
+        resetForm();
+        setIsModalOpen(false);
+      } catch (error) {
+        console.error("Error creating orchid:", error);
+      } finally {
+        setSubmitting(false);
       }
-
-      const newOrchid = {
-        ...values,
-        image: imageUrl,
-      };
-
-      await createOrchid(newOrchid);
-      await fetchOrchids();
-      resetForm();
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error("Error creating orchid:", error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    },
+    validationSchema: validationSchema,
+  });
 
   const columns = [
     { field: "index", headerName: "ID", width: 70 },
@@ -388,134 +404,127 @@ export default function Dashboard() {
           <Typography variant='h6' component='h2' gutterBottom>
             Add New Orchid
           </Typography>
-          <Formik
-            initialValues={{
-              name: "",
-              rating: 0,
-              isSpecial: false,
-              color: "",
-              origin: "",
-              category: "",
-              detail: "",
-              video: "",
-              image: null,
-            }}
-            validationSchema={validationSchema}
-            onSubmit={handleCreateOrchid}
-          >
-            {({ errors, touched, setFieldValue, isSubmitting }) => (
-              <Form>
-                <Field
-                  as={TextField}
-                  name='name'
-                  label='Name'
-                  fullWidth
-                  margin='normal'
-                  error={touched.name && errors.name}
-                  helperText={touched.name && errors.name}
-                />
-                <Field
-                  as={TextField}
-                  name='rating'
-                  label='Rating'
-                  type='number'
-                  fullWidth
-                  margin='normal'
-                  error={touched.rating && errors.rating}
-                  helperText={touched.rating && errors.rating}
-                />
-                <FormControlLabel
-                  label='Special Orchid'
-                  control={
-                    <Field as={Switch} name='isSpecial' color='primary' />
-                  }
-                />
-                <Field
-                  as={TextField}
-                  name='color'
-                  label='Color'
-                  fullWidth
-                  margin='normal'
-                  error={touched.color && errors.color}
-                  helperText={touched.color && errors.color}
-                />
-                <Field
-                  as={TextField}
-                  name='origin'
-                  label='Origin'
-                  fullWidth
-                  margin='normal'
-                  error={touched.origin && errors.origin}
-                  helperText={touched.origin && errors.origin}
-                />
-                <Field
-                  as={TextField}
-                  name='category'
-                  label='Category'
-                  fullWidth
-                  margin='normal'
-                  error={touched.category && errors.category}
-                  helperText={touched.category && errors.category}
-                />
-                <Field
-                  as={TextField}
-                  name='detail'
-                  label='Detail'
-                  fullWidth
-                  multiline
-                  rows={4}
-                  margin='normal'
-                  error={touched.detail && errors.detail}
-                  helperText={touched.detail && errors.detail}
-                />
-                <Field
-                  as={TextField}
-                  name='video'
-                  label='Video Url'
-                  fullWidth
-                  multiline
-                  rows={4}
-                  margin='normal'
-                  error={touched.detail && errors.detail}
-                  helperText={touched.detail && errors.detail}
-                />
-                <input
-                  accept='image/*'
-                  style={{ display: "none" }}
-                  id='raised-button-file'
-                  type='file'
-                  onChange={(event) => {
-                    setFieldValue("image", event.currentTarget.files[0]);
-                  }}
-                />
-                <label htmlFor='raised-button-file'>
-                  <Button
-                    variant='contained'
-                    component='span'
-                    startIcon={<CloudUploadIcon />}
-                    sx={{ mt: 2, mb: 2 }}
-                  >
-                    Upload Image
-                  </Button>
-                </label>
-                {uploadProgress > 0 && (
-                  <CircularProgress
-                    variant='determinate'
-                    value={uploadProgress}
-                  />
-                )}
+          {({ setFieldValue, isSubmitting }) => (
+            <FormControl>
+              <TextField
+                id='outlined-basic'
+                variant='outlined'
+                name='name'
+                label='Orchid Name'
+                value={formik.values.name}
+                onChange={formik.handleChange}
+              />
+              <Select
+                id='demo-simple-select'
+                value={formik.values.rating}
+                label='Rating'
+                onChange={formik.handleChange}
+              >
+                <MenuItem value={1}>
+                  <Rating name='read-only' value={1} readOnly />
+                </MenuItem>
+                <MenuItem value={2}>
+                  <Rating name='read-only' value={2} readOnly />
+                </MenuItem>
+                <MenuItem value={3}>
+                  <Rating name='read-only' value={3} readOnly />
+                </MenuItem>
+                <MenuItem value={4}>
+                  <Rating name='read-only' value={4} readOnly />
+                </MenuItem>
+                <MenuItem value={5}>
+                  <Rating name='read-only' value={5} readOnly />
+                </MenuItem>
+              </Select>
+              <Switch
+                name='isSepcial'
+                label='Special Orchid'
+                value={formik.values.isSpecial}
+                onChange={formik.handleChange}
+                defaultChecked
+              />
+              <TextField
+                id='outlined-basic'
+                variant='outlined'
+                name='color'
+                label='Orchid Color'
+                value={formik.values.color}
+                onChange={formik.handleChange}
+              />
+              <TextField
+                id='outlined-basic'
+                variant='outlined'
+                name='origin'
+                label='Orchid Origin'
+                value={formik.values.origin}
+                onChange={formik.handleChange}
+              />
+              <Select
+                id='demo-simple-select'
+                value={formik.values.category}
+                label='Category'
+                onChange={formik.handleChange}
+              >
+                {categories.map((c) => (
+                  <MenuItem value={c.name} key={c.id}>
+                    {c.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              <TextField
+                id='filled-multiline-static'
+                label='Detail'
+                name='detail'
+                multiline
+                rows={4}
+                variant='filled'
+                value={formik.values.detail}
+                onChange={formik.handleChange}
+              />
+              <TextField
+                id='outlined-basic'
+                variant='outlined'
+                name='video'
+                label='Orchid Video'
+                value={formik.values.video}
+                onChange={formik.handleChange}
+              />
+              <input
+                accept='image/*'
+                style={{ display: "none" }}
+                id='raised-button-file'
+                type='file'
+                onChange={(event) => {
+                  setFieldValue("image", event.currentTarget.files[0]);
+                }}
+              />
+              <label htmlFor='raised-button-file'>
                 <Button
-                  type='submit'
                   variant='contained'
-                  color='primary'
-                  disabled={isSubmitting}
-                  sx={{ mt: 2 }}
+                  component='span'
+                  startIcon={<CloudUploadIcon />}
+                  sx={{ mt: 2, mb: 2 }}
                 >
-                  {isSubmitting ? "Submitting..." : "Submit"}
+                  Upload Image
                 </Button>
-              </Form>
-            )}
-          </Formik>
+              </label>
+              {uploadProgress > 0 && (
+                <CircularProgress
+                  variant='determinate'
+                  value={uploadProgress}
+                />
+              )}
+              <Button
+                type='submit'
+                variant='contained'
+                color='primary'
+                disabled={isSubmitting}
+                sx={{ mt: 2 }}
+              >
+                {isSubmitting ? "Submitting..." : "Submit"}
+              </Button>
+            </FormControl>
+          )}
         </Box>
       </Modal>
     </Box>
