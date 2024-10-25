@@ -147,6 +147,7 @@ export default function Dashboard() {
           await createOrchid(orchidData);
         } else if (modalMode === "update" && selectedOrchid) {
           await updateOrchid(selectedOrchid.Id, orchidData);
+          handleMenuClose();
         } else {
           throw new Error("Invalid modal mode or missing selectedOrchid");
         }
@@ -229,7 +230,7 @@ export default function Dashboard() {
       width: 100,
       renderCell: (params) => (
         <img
-          src={params.value}
+          src={params.value || "src/assets/images/image.jpg"}
           alt={`${params.row.name} orchid`}
           style={{
             width: "100%",
@@ -251,7 +252,10 @@ export default function Dashboard() {
         <iframe
           width='100%'
           height='100%'
-          src={params.value}
+          src={
+            params.value ||
+            "https://www.youtube.com/embed/dQw4w9WgXcQ?si=xaqoh0xatwfp_iun"
+          }
           title={`${params.row.name} video`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen
