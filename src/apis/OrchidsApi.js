@@ -39,3 +39,23 @@ export const getOrchidById = async (id) => {
     throw error;
   }
 };
+
+export const createOrchid = async (orchid) => {
+  try {
+    const response = await fetch(`${baseUrl}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "applicatoin/json",
+      },
+      body: JSON.stringify(orchid),
+      credentials: "same-origin",
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating orchid: ", error);
+    throw error;
+  }
+};
