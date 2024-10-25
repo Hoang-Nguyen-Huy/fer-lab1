@@ -220,14 +220,13 @@ export default function Dashboard() {
       field: "index",
       headerClassName: "super-app-theme--header",
       headerName: "ID",
-      width: 70,
+      width: 60,
     },
     {
       field: "name",
       headerClassName: "super-app-theme--header",
       headerName: "Orchid name",
-      width: 130,
-      flex: 0.5,
+      width: 140,
     },
     {
       field: "rating",
