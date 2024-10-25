@@ -216,10 +216,22 @@ export default function Dashboard() {
   };
 
   const columns = [
-    { field: "index", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Orchid name", width: 130, flex: 0.5 },
+    {
+      field: "index",
+      headerClassName: "super-app-theme--header",
+      headerName: "ID",
+      width: 70,
+    },
+    {
+      field: "name",
+      headerClassName: "super-app-theme--header",
+      headerName: "Orchid name",
+      width: 130,
+      flex: 0.5,
+    },
     {
       field: "rating",
+      headerClassName: "super-app-theme--header",
       headerName: "Rating",
       width: 140,
       renderCell: (params) => (
@@ -228,6 +240,7 @@ export default function Dashboard() {
     },
     {
       field: "isSpecial",
+      headerClassName: "super-app-theme--header",
       headerName: "Special Orchid",
       width: 150,
       renderCell: (params) =>
@@ -259,6 +272,7 @@ export default function Dashboard() {
     },
     {
       field: "image",
+      headerClassName: "super-app-theme--header",
       headerName: "Image",
       width: 100,
       renderCell: (params) => (
@@ -274,11 +288,27 @@ export default function Dashboard() {
         />
       ),
     },
-    { field: "color", headerName: "Color", width: 100 },
-    { field: "origin", headerName: "Origin", width: 130 },
-    { field: "category", headerName: "Category", width: 130 },
+    {
+      field: "color",
+      headerClassName: "super-app-theme--header",
+      headerName: "Color",
+      width: 100,
+    },
+    {
+      field: "origin",
+      headerClassName: "super-app-theme--header",
+      headerName: "Origin",
+      width: 130,
+    },
+    {
+      field: "category",
+      headerClassName: "super-app-theme--header",
+      headerName: "Category",
+      width: 130,
+    },
     {
       field: "video",
+      headerClassName: "super-app-theme--header",
       headerName: "Video",
       width: 150,
       renderCell: (params) => (
@@ -298,12 +328,14 @@ export default function Dashboard() {
     },
     {
       field: "detail",
+      headerClassName: "super-app-theme--header",
       headerName: "Detail",
       width: 200,
       flex: 1,
     },
     {
       field: "actions",
+      headerClassName: "super-app-theme--header",
       headerName: "Actions",
       width: 100,
       renderCell: (params) => (
@@ -383,7 +415,6 @@ export default function Dashboard() {
             },
           }}
           pageSizeOptions={[5, 10, 25]}
-          checkboxSelection
           disableRowSelectionOnClick
           sx={{
             border: `1px solid ${theme.divider}`,
@@ -392,8 +423,8 @@ export default function Dashboard() {
               backgroundColor: alpha(theme.card.backgroundColor, 0.6),
               color: theme.text.primary,
             },
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: alpha(theme.header.backgroundColor, 0.8),
+            "& .super-app-theme--header": {
+              backgroundColor: theme.mainContent.backgroundColor,
               color: theme.text.primary,
               borderBottom: `2px solid ${theme.divider}`,
             },
