@@ -436,6 +436,7 @@ export default function Dashboard() {
             borderRadius: 2,
             maxHeight: "90vh",
             overflowY: "auto",
+            color: theme.text.primary,
           }}
         >
           <Typography variant='h6' component='h2' gutterBottom>
@@ -467,16 +468,16 @@ export default function Dashboard() {
               </FormControl>
               <Box>
                 <Typography component='legend'>Special Orchid</Typography>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      name='isSpecial'
+                      checked={formik.values.isSpecial}
+                      onChange={formik.handleChange}
+                    />
+                  }
+                />
               </Box>
-              <FormControlLabel
-                control={
-                  <Switch
-                    name='isSpecial'
-                    checked={formik.values.isSpecial}
-                    onChange={formik.handleChange}
-                  />
-                }
-              />
               <TextField
                 fullWidth
                 id='color'
