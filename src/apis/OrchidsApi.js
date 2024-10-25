@@ -39,3 +39,60 @@ export const getOrchidById = async (id) => {
     throw error;
   }
 };
+
+export const createOrchid = async (orchid) => {
+  try {
+    const response = await fetch(`${baseUrl}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orchid),
+      credentials: "same-origin",
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating orchid: ", error);
+    throw error;
+  }
+};
+
+export const updateOrchid = async (id, orchid) => {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orchid),
+      credentials: "same-origin",
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating orchid: ", error);
+    throw error;
+  }
+};
+
+export const deleteOrchid = async (id) => {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`, {
+      method: "DELETE",
+      credentials: "same-origin",
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error deleting orchid: ", error);
+    throw error;
+  }
+};

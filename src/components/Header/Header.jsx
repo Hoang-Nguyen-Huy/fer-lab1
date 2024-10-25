@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -16,7 +16,7 @@ import { ThemeContext } from "../../themes/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import PersonIcon from "@mui/icons-material/Person";
+// import PersonIcon from "@mui/icons-material/Person";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import Avatar from "@mui/material/Avatar";
 import { UserAuth } from "../../context/AuthContext";
@@ -31,11 +31,11 @@ const pages = [
 ];
 
 const settings = [
-  { name: "Profile", icon: <PersonIcon />, path: "/fer-lab1/profile" },
+  // { name: "Profile", icon: <PersonIcon />, path: "/fer-lab1/profile" },
   {
     name: "Dashboard",
     icon: <DashboardIcon />,
-    path: "/fer-lab1/orchid-management",
+    path: "/fer-lab1/dashboard",
   },
   { name: "Logout", icon: <LogoutIcon /> },
 ];
@@ -47,6 +47,7 @@ export default function Header() {
   const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const { googleSignIn, user, logOut } = UserAuth();
+  const navigate = useNavigate();
 
   const handleScroll = useCallback(() => {
     const isScrolled = window.scrollY > 10;
@@ -103,8 +104,10 @@ export default function Header() {
   };
 
   const handleSettingClick = (setting) => {
-    if (setting === "Logout") {
+    if (setting.name === "Logout") {
       handleLogout();
+    } else if (setting.path) {
+      navigate(setting.path);
     }
     handleCloseUserMenu();
   };
@@ -357,8 +360,7 @@ export default function Header() {
               {settings.map((setting) => (
                 <MenuItem
                   key={setting.name}
-                  onClick={() => handleSettingClick(setting.name)}
-                  to={setting.path}
+                  onClick={() => handleSettingClick(setting)}
                 >
                   {setting.icon}
                   <Typography sx={{ ml: 1 }}>{setting.name}</Typography>
