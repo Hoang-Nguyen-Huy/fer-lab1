@@ -61,6 +61,7 @@ export default function Dashboard() {
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
+  const [imagePreview, setImagePreview] = useState(null);
 
   const fetchOrchids = async () => {
     try {
@@ -94,6 +95,7 @@ export default function Dashboard() {
     setSelectedOrchid(orchid);
     setModalMode("update");
     setIsModalOpen(true);
+    setImagePreview(orchid.image);
   };
 
   const handleDelete = async () => {
@@ -109,10 +111,12 @@ export default function Dashboard() {
   const handleAddOrchid = () => {
     setModalMode("create");
     setIsModalOpen(true);
+    setImagePreview(null);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setImagePreview(null);
     formik.resetForm();
   };
 
@@ -132,7 +136,10 @@ export default function Dashboard() {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         let imageUrl = "";
-        if (values.image) {
+        if (
+          (values.image && modalMode === "create") ||
+          (modalMode === "update" && values.image !== selectedOrchid.image)
+        ) {
           const storageRef = ref(storage, `orchid-images/${values.image.name}`);
           await uploadBytes(storageRef, values.image);
           imageUrl = await getDownloadURL(storageRef);
@@ -140,7 +147,7 @@ export default function Dashboard() {
 
         const orchidData = {
           ...values,
-          image: imageUrl === "" ? values.image : imageUrl,
+          image: imageUrl === "" ? selectedOrchid.image : imageUrl,
         };
 
         if (modalMode === "create") {
@@ -155,6 +162,7 @@ export default function Dashboard() {
         await fetchOrchids();
         resetForm();
         setIsModalOpen(false);
+        setImagePreview(null);
       } catch (error) {
         console.error(
           `Error ${modalMode === "create" ? "creating" : "updating"} orchid:`,
@@ -179,6 +187,7 @@ export default function Dashboard() {
         video: selectedOrchid.video,
         image: selectedOrchid.image,
       });
+      setImagePreview(selectedOrchid.image);
     }
   }, [selectedOrchid, modalMode]);
 
@@ -445,7 +454,9 @@ export default function Dashboard() {
                 helperText={formik.touched.name && formik.errors.name}
               />
               <FormControl fullWidth>
-                <Typography component='legend'>Rating</Typography>
+                <Box>
+                  <Typography component='legend'>Rating</Typography>
+                </Box>
                 <Rating
                   name='rating'
                   value={Number(formik.values.rating)}
@@ -454,6 +465,9 @@ export default function Dashboard() {
                   }}
                 />
               </FormControl>
+              <Box>
+                <Typography component='legend'>Special Orchid</Typography>
+              </Box>
               <FormControlLabel
                 control={
                   <Switch
@@ -462,7 +476,6 @@ export default function Dashboard() {
                     onChange={formik.handleChange}
                   />
                 }
-                label='Special Orchid'
               />
               <TextField
                 fullWidth
@@ -545,10 +558,18 @@ export default function Dashboard() {
                   Upload Image
                 </Button>
               </label>
-              {formik.values.image && (
-                <Typography variant='body2'>
-                  Selected file: {formik.values.image.name}
-                </Typography>
+              {imagePreview && (
+                <Box sx={{ mt: 2, mb: 2 }}>
+                  <img
+                    src={imagePreview}
+                    alt='Image preview'
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "200px",
+                      objectFit: "contain",
+                    }}
+                  />
+                </Box>
               )}
               <Button
                 type='submit'
@@ -557,7 +578,11 @@ export default function Dashboard() {
                 disabled={formik.isSubmitting}
                 sx={{ mt: 2 }}
               >
-                {formik.isSubmitting ? "Submitting..." : "Submit"}
+                {formik.isSubmitting
+                  ? "Submitting..."
+                  : modalMode === "create"
+                  ? "Submit"
+                  : "Update"}
               </Button>
             </FormControl>
           </form>
