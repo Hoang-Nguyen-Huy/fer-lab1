@@ -80,3 +80,19 @@ export const updateOrchid = async (id, orchid) => {
     throw error;
   }
 };
+
+export const deleteOrchid = async (id) => {
+  try {
+    const response = await fetch(`${baseUrl}/${id}`, {
+      method: "DELETE",
+      credentials: "same-origin",
+    });
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error deleting orchid: ", error);
+    throw error;
+  }
+};
