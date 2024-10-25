@@ -8,6 +8,8 @@ import SpecialOrchid from "./components/SpecialOrchid";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import News from "./components/News";
+import Protected from "./components/Protected";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -20,6 +22,14 @@ function App() {
         <Route path='/fer-lab1/news' element={<News />}></Route>
         <Route path='/fer-lab1/about' element={<About />} />
         <Route path='/fer-lab1/contact' element={<Contact />} />
+        <Route
+          path='/fer-lab1/dashboard'
+          element={
+            <Protected>
+              <Dashboard />
+            </Protected>
+          }
+        />
       </Routes>
       <Footer />
     </div>
