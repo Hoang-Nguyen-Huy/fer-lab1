@@ -430,6 +430,7 @@ export default function Dashboard() {
             },
             "& .MuiDataGrid-cell": {
               borderBottom: `1px solid ${alpha(theme.divider, 0.3)}`,
+              color: theme.text.primary,
             },
             "& .MuiDataGrid-cell:focus": {
               outline: "none",
