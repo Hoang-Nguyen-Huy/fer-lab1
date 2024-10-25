@@ -90,10 +90,10 @@ export default function Dashboard() {
     setSelectedOrchid(null);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (orchid) => {
+    setSelectedOrchid(orchid);
     setModalMode("update");
     setIsModalOpen(true);
-    handleMenuClose();
   };
 
   const handleDelete = async () => {
@@ -140,13 +140,15 @@ export default function Dashboard() {
 
         const orchidData = {
           ...values,
-          image: imageUrl,
+          image: imageUrl === "" ? values.image : imageUrl,
         };
 
         if (modalMode === "create") {
           await createOrchid(orchidData);
+        } else if (modalMode === "update" && selectedOrchid) {
+          await updateOrchid(selectedOrchid.Id, orchidData);
         } else {
-          await updateOrchid(orchidData.Id, orchidData);
+          throw new Error("Invalid modal mode or missing selectedOrchid");
         }
 
         await fetchOrchids();
@@ -400,7 +402,7 @@ export default function Dashboard() {
           },
         }}
       >
-        <MenuItem onClick={handleUpdate}>Update</MenuItem>
+        <MenuItem onClick={() => handleUpdate(selectedOrchid)}>Update</MenuItem>
         <MenuItem onClick={handleDelete}>Delete</MenuItem>
       </Menu>
       <Modal
