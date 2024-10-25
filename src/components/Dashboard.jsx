@@ -1,9 +1,19 @@
-import { Box, IconButton, Menu, MenuItem, Paper } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import { useContext, useEffect, useState } from "react";
+import {
+  Box,
+  IconButton,
+  Menu,
+  MenuItem,
+  Paper,
+  Typography,
+  Button,
+  Chip,
+} from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
 import { getAllOrchids } from "../apis/OrchidsApi";
-import { MoreVert as MoreVertIcon } from "@mui/icons-material";
+import { MoreVert as MoreVertIcon, Add as AddIcon } from "@mui/icons-material";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 export default function Dashboard() {
   const { theme } = useContext(ThemeContext);
@@ -49,33 +59,54 @@ export default function Dashboard() {
     handleMenuClose();
   };
 
-  const paginationModel = { page: 0, pageSize: 5 };
+  const handleAddOrchid = () => {
+    console.log("Add new orchid");
+    // Implement the logic to add a new orchid
+  };
 
   const columns = [
     { field: "index", headerName: "ID", width: 70 },
-    { field: "name", headerName: "Orchid name", width: 130 },
-    { field: "rating", headerName: "Rating", width: 130 },
+    { field: "name", headerName: "Orchid name", width: 100 },
+    { field: "rating", headerName: "Rating", width: 100, type: "number" },
     {
       field: "isSpecial",
       headerName: "Special Orchid",
       type: "boolean",
-      width: 90,
+      width: 130,
+      renderCell: (params) =>
+        params.value ? (
+          <Chip
+            icon={AutoAwesomeIcon}
+            sx={{
+              ml: 1,
+              backgroundColor: theme.chip.backgroundColor,
+              color: theme.chip.color,
+            }}
+          />
+        ) : (
+          <p>Noraml</p>
+        ),
     },
     {
       field: "image",
       headerName: "Image",
-      width: 130,
+      width: 100,
       renderCell: (params) => (
         <img
           src={params.value}
           alt={`${params.row.name} orchid`}
-          style={{ width: 50, height: 50, objectFit: "cover" }}
+          style={{
+            width: 50,
+            height: 50,
+            objectFit: "cover",
+            borderRadius: "50%",
+          }}
         />
       ),
     },
-    { field: "color", headerName: "Color", width: 70 },
-    { field: "origin", headerName: "Origin", widht: 90 },
-    { field: "category", headerName: "Category", widht: 130 },
+    { field: "color", headerName: "Color", width: 100 },
+    { field: "origin", headerName: "Origin", width: 130 },
+    { field: "category", headerName: "Category", width: 130 },
     {
       field: "video",
       headerName: "Video",
@@ -88,13 +119,15 @@ export default function Dashboard() {
           title={`${params.row.name} video`}
           allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
           allowFullScreen
+          style={{ borderRadius: "6px" }}
         ></iframe>
       ),
     },
     {
       field: "detail",
       headerName: "Detail",
-      width: 150,
+      width: 200,
+      flex: 1,
     },
     {
       field: "actions",
@@ -116,22 +149,65 @@ export default function Dashboard() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "100vh",
+        minHeight: "calc(100vh - 64px)", // Adjust based on your AppBar height
         backgroundColor: theme.mainContent.backgroundColor,
         color: theme.text.primary,
-        paddingTop: "8px",
-        justifyContent: "center",
+        padding: "68px",
       }}
     >
-      <Paper sx={{ padding: "2rem" }}>
+      <Paper
+        elevation={3}
+        sx={{
+          padding: "24px",
+          borderRadius: "12px",
+          backgroundColor: theme.card.backgroundColor,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "16px",
+          }}
+        >
+          <Typography variant='h4' component='h1' gutterBottom>
+            Orchid Management
+          </Typography>
+          <Button
+            variant='contained'
+            color='primary'
+            startIcon={<AddIcon />}
+            onClick={handleAddOrchid}
+          >
+            Add Orchid
+          </Button>
+        </Box>
         <DataGrid
+          rowHeight={100}
           rows={orchids}
           columns={columns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[5, 10, 25]}
           checkboxSelection
           disableRowSelectionOnClick
-          sx={{ border: 0 }}
+          sx={{
+            border: 0,
+            borderRadius: "8px",
+            "& .MuiDataGrid-cell:focus": {
+              outline: "none",
+            },
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: theme.card.hoverBackgroundColor,
+            },
+          }}
+          components={{
+            Toolbar: GridToolbar,
+          }}
         />
       </Paper>
       <Menu
