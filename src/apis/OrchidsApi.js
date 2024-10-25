@@ -45,7 +45,7 @@ export const createOrchid = async (orchid) => {
     const response = await fetch(`${baseUrl}`, {
       method: "POST",
       headers: {
-        "Content-Type": "applicatoin/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(orchid),
       credentials: "same-origin",
