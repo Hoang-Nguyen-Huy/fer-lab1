@@ -40,6 +40,7 @@ import * as Yup from "yup";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
 import { categories } from "../OrchidCategory";
+import { countries } from "../OrchidOrigin";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -89,6 +90,7 @@ export default function Dashboard() {
   const handleMenuClose = () => {
     setAnchorEl(null);
     setSelectedOrchid(null);
+    setModalMode("create");
   };
 
   const handleUpdate = (orchid) => {
@@ -147,7 +149,10 @@ export default function Dashboard() {
 
         const orchidData = {
           ...values,
-          image: imageUrl === "" ? selectedOrchid.image : imageUrl,
+          image:
+            imageUrl === "" && selectedOrchid.image !== null
+              ? selectedOrchid.image
+              : imageUrl,
         };
 
         if (modalMode === "create") {
@@ -488,16 +493,31 @@ export default function Dashboard() {
                 error={formik.touched.color && Boolean(formik.errors.color)}
                 helperText={formik.touched.color && formik.errors.color}
               />
-              <TextField
-                fullWidth
-                id='origin'
-                name='origin'
-                label='Orchid Origin'
-                value={formik.values.origin}
-                onChange={formik.handleChange}
-                error={formik.touched.origin && Boolean(formik.errors.origin)}
-                helperText={formik.touched.origin && formik.errors.origin}
-              />
+              <FormControl fullWidth>
+                <InputLabel id='origin-label'>Orchid Origin</InputLabel>
+                <Select
+                  labelId='origin-label'
+                  id='origin'
+                  name='origin'
+                  label='Orchid Origin'
+                  value={formik.values.origin}
+                  onChange={formik.handleChange}
+                  error={formik.touched.origin && Boolean(formik.errors.origin)}
+                >
+                  {countries.map((c) => (
+                    <MenuItem key={c.code} value={c.label}>
+                      <img
+                        loading='lazy'
+                        width='20'
+                        srcSet={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png 2x`}
+                        src={`https://flagcdn.com/w20/${c.code.toLowerCase()}.png`}
+                        alt=''
+                      />
+                      {c.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <FormControl fullWidth>
                 <InputLabel id='category-label'>Orchid Category</InputLabel>
                 <Select
