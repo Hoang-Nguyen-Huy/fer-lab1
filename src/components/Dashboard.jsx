@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect, useContext } from "react";
 import {
   Box,
@@ -22,7 +23,12 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
-import { createOrchid, deleteOrchid, getAllOrchids } from "../apis/OrchidsApi";
+import {
+  createOrchid,
+  deleteOrchid,
+  getAllOrchids,
+  updateOrchid,
+} from "../apis/OrchidsApi";
 import {
   MoreVert as MoreVertIcon,
   Add as AddIcon,
@@ -54,6 +60,7 @@ export default function Dashboard() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState("create");
 
   const fetchOrchids = async () => {
     try {
@@ -84,7 +91,8 @@ export default function Dashboard() {
   };
 
   const handleUpdate = () => {
-    console.log("Update", selectedOrchid);
+    setModalMode("update");
+    setIsModalOpen(true);
     handleMenuClose();
   };
 
@@ -99,6 +107,7 @@ export default function Dashboard() {
   };
 
   const handleAddOrchid = () => {
+    setModalMode("create");
     setIsModalOpen(true);
   };
 
@@ -129,22 +138,46 @@ export default function Dashboard() {
           imageUrl = await getDownloadURL(storageRef);
         }
 
-        const newOrchid = {
+        const orchidData = {
           ...values,
           image: imageUrl,
         };
 
-        await createOrchid(newOrchid);
+        if (modalMode === "create") {
+          await createOrchid(orchidData);
+        } else {
+          await updateOrchid(orchidData.Id, orchidData);
+        }
+
         await fetchOrchids();
         resetForm();
         setIsModalOpen(false);
       } catch (error) {
-        console.error("Error creating orchid:", error);
+        console.error(
+          `Error ${modalMode === "create" ? "creating" : "updating"} orchid:`,
+          error
+        );
       } finally {
         setSubmitting(false);
       }
     },
   });
+
+  useEffect(() => {
+    if (selectedOrchid && modalMode === "update") {
+      formik.setValues({
+        name: selectedOrchid.name,
+        rating: selectedOrchid.rating,
+        isSpecial: selectedOrchid.isSpecial,
+        color: selectedOrchid.color,
+        origin: selectedOrchid.origin,
+        category: selectedOrchid.category,
+        detail: selectedOrchid.detail,
+        video: selectedOrchid.video,
+        image: selectedOrchid.image,
+      });
+    }
+  }, [selectedOrchid, modalMode]);
 
   const columns = [
     { field: "index", headerName: "ID", width: 70 },
@@ -391,7 +424,7 @@ export default function Dashboard() {
           }}
         >
           <Typography variant='h6' component='h2' gutterBottom>
-            Add New Orchid
+            {modalMode === "create" ? "Add New Orchid" : "Update Orchid"}
           </Typography>
           <form onSubmit={formik.handleSubmit}>
             <FormControl fullWidth sx={{ gap: 2 }}>
@@ -451,6 +484,7 @@ export default function Dashboard() {
                   labelId='category-label'
                   id='category'
                   name='category'
+                  label='Orchid Category'
                   value={formik.values.category}
                   onChange={formik.handleChange}
                   error={
