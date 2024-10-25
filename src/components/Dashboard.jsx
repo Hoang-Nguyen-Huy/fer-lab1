@@ -18,6 +18,8 @@ import {
   CircularProgress,
   FormControl,
   Select,
+  FormControlLabel,
+  InputLabel,
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
@@ -99,6 +101,7 @@ export default function Dashboard() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    formik.resetForm();
   };
 
   const formik = useFormik({
@@ -113,17 +116,18 @@ export default function Dashboard() {
       video: "",
       image: null,
     },
-    onSubmit: async (orchid, { setSubmitting, resetForm }) => {
+    validationSchema: validationSchema,
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         let imageUrl = "";
-        if (orchid.image) {
-          const storageRef = ref(storage, `orchid-images/${orchid.image.name}`);
-          await uploadBytes(storageRef, orchid.image);
+        if (values.image) {
+          const storageRef = ref(storage, `orchid-images/${values.image.name}`);
+          await uploadBytes(storageRef, values.image);
           imageUrl = await getDownloadURL(storageRef);
         }
 
         const newOrchid = {
-          ...orchid,
+          ...values,
           image: imageUrl,
         };
 
@@ -137,7 +141,6 @@ export default function Dashboard() {
         setSubmitting(false);
       }
     },
-    validationSchema: validationSchema,
   });
 
   const columns = [
@@ -247,7 +250,7 @@ export default function Dashboard() {
       sx={{
         display: "flex",
         flexDirection: "column",
-        minHeight: "calc(100vh - 64px)", // Adjust based on your AppBar height
+        minHeight: "calc(100vh - 64px)",
         backgroundColor: theme.mainContent.backgroundColor,
         color: theme.text.primary,
         padding: isMobile ? "16px" : "68px",
@@ -399,95 +402,108 @@ export default function Dashboard() {
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
+            maxHeight: "90vh",
+            overflowY: "auto",
           }}
         >
           <Typography variant='h6' component='h2' gutterBottom>
             Add New Orchid
           </Typography>
-          {({ setFieldValue, isSubmitting }) => (
-            <FormControl>
+          <form onSubmit={formik.handleSubmit}>
+            <FormControl fullWidth sx={{ gap: 2 }}>
               <TextField
-                id='outlined-basic'
-                variant='outlined'
+                fullWidth
+                id='name'
                 name='name'
                 label='Orchid Name'
                 value={formik.values.name}
                 onChange={formik.handleChange}
+                error={formik.touched.name && Boolean(formik.errors.name)}
+                helperText={formik.touched.name && formik.errors.name}
               />
-              <Select
-                id='demo-simple-select'
-                value={formik.values.rating}
-                label='Rating'
-                onChange={formik.handleChange}
-              >
-                <MenuItem value={1}>
-                  <Rating name='read-only' value={1} readOnly />
-                </MenuItem>
-                <MenuItem value={2}>
-                  <Rating name='read-only' value={2} readOnly />
-                </MenuItem>
-                <MenuItem value={3}>
-                  <Rating name='read-only' value={3} readOnly />
-                </MenuItem>
-                <MenuItem value={4}>
-                  <Rating name='read-only' value={4} readOnly />
-                </MenuItem>
-                <MenuItem value={5}>
-                  <Rating name='read-only' value={5} readOnly />
-                </MenuItem>
-              </Select>
-              <Switch
-                name='isSepcial'
+              <FormControl fullWidth>
+                <Typography component='legend'>Rating</Typography>
+                <Rating
+                  name='rating'
+                  value={Number(formik.values.rating)}
+                  onChange={(event, newValue) => {
+                    formik.setFieldValue("rating", newValue);
+                  }}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={
+                  <Switch
+                    name='isSpecial'
+                    checked={formik.values.isSpecial}
+                    onChange={formik.handleChange}
+                  />
+                }
                 label='Special Orchid'
-                value={formik.values.isSpecial}
-                onChange={formik.handleChange}
-                defaultChecked
               />
               <TextField
-                id='outlined-basic'
-                variant='outlined'
+                fullWidth
+                id='color'
                 name='color'
                 label='Orchid Color'
                 value={formik.values.color}
                 onChange={formik.handleChange}
+                error={formik.touched.color && Boolean(formik.errors.color)}
+                helperText={formik.touched.color && formik.errors.color}
               />
               <TextField
-                id='outlined-basic'
-                variant='outlined'
+                fullWidth
+                id='origin'
                 name='origin'
                 label='Orchid Origin'
                 value={formik.values.origin}
                 onChange={formik.handleChange}
+                error={formik.touched.origin && Boolean(formik.errors.origin)}
+                helperText={formik.touched.origin && formik.errors.origin}
               />
-              <Select
-                id='demo-simple-select'
-                value={formik.values.category}
-                label='Category'
-                onChange={formik.handleChange}
-              >
-                {categories.map((c) => (
-                  <MenuItem value={c.name} key={c.id}>
-                    {c.name}
-                  </MenuItem>
-                ))}
-              </Select>
+              <FormControl fullWidth>
+                <InputLabel id='demo-simple-select-label'>
+                  Orchid Category
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-label'
+                  id='category'
+                  name='category'
+                  label='Orchid Category'
+                  value={formik.values.category}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.category && Boolean(formik.errors.category)
+                  }
+                >
+                  {categories.map((c) => (
+                    <MenuItem value={c.name} key={c.id}>
+                      {c.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               <TextField
-                id='filled-multiline-static'
-                label='Detail'
+                fullWidth
+                id='detail'
                 name='detail'
+                label='Detail'
                 multiline
                 rows={4}
-                variant='filled'
                 value={formik.values.detail}
                 onChange={formik.handleChange}
+                error={formik.touched.detail && Boolean(formik.errors.detail)}
+                helperText={formik.touched.detail && formik.errors.detail}
               />
               <TextField
-                id='outlined-basic'
-                variant='outlined'
+                fullWidth
+                id='video'
                 name='video'
-                label='Orchid Video'
+                label='Orchid Video URL'
                 value={formik.values.video}
                 onChange={formik.handleChange}
+                error={formik.touched.video && Boolean(formik.errors.video)}
+                helperText={formik.touched.video && formik.errors.video}
               />
               <input
                 accept='image/*'
@@ -495,7 +511,7 @@ export default function Dashboard() {
                 id='raised-button-file'
                 type='file'
                 onChange={(event) => {
-                  setFieldValue("image", event.currentTarget.files[0]);
+                  formik.setFieldValue("image", event.currentTarget.files[0]);
                 }}
               />
               <label htmlFor='raised-button-file'>
@@ -508,6 +524,11 @@ export default function Dashboard() {
                   Upload Image
                 </Button>
               </label>
+              {formik.values.image && (
+                <Typography variant='body2'>
+                  Selected file: {formik.values.image.name}
+                </Typography>
+              )}
               {uploadProgress > 0 && (
                 <CircularProgress
                   variant='determinate'
@@ -518,13 +539,13 @@ export default function Dashboard() {
                 type='submit'
                 variant='contained'
                 color='primary'
-                disabled={isSubmitting}
+                disabled={formik.isSubmitting}
                 sx={{ mt: 2 }}
               >
-                {isSubmitting ? "Submitting..." : "Submit"}
+                {formik.isSubmitting ? "Submitting..." : "Submit"}
               </Button>
             </FormControl>
-          )}
+          </form>
         </Box>
       </Modal>
     </Box>
