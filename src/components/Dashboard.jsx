@@ -62,6 +62,7 @@ export default function Dashboard() {
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState("create");
+  const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
 
   const fetchOrchids = async () => {
@@ -195,6 +196,24 @@ export default function Dashboard() {
       setImagePreview(selectedOrchid.image);
     }
   }, [selectedOrchid, modalMode]);
+
+  useEffect(() => {
+    if (!selectedFile) {
+      return;
+    }
+    const objectUrl = URL.createObjectURL(selectedFile);
+    setImagePreview(objectUrl);
+
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [selectedFile]);
+
+  const onSelectFile = (e) => {
+    if (!e.currentTarget.files || e.currentTarget.files.length === 0) {
+      setSelectedFile(null);
+      return;
+    }
+    setSelectedFile(e.currentTarget.files[0]);
+  };
 
   const columns = [
     { field: "index", headerName: "ID", width: 70 },
@@ -566,6 +585,7 @@ export default function Dashboard() {
                 id='raised-button-file'
                 type='file'
                 onChange={(event) => {
+                  onSelectFile(event);
                   formik.setFieldValue("image", event.currentTarget.files[0]);
                 }}
               />
