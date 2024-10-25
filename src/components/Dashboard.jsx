@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Box,
   IconButton,
@@ -15,13 +15,12 @@ import {
   Modal,
   TextField,
   Switch,
-  CircularProgress,
   FormControl,
   Select,
   FormControlLabel,
   InputLabel,
 } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
 import { createOrchid, getAllOrchids } from "../apis/OrchidsApi";
 import {
@@ -55,7 +54,6 @@ export default function Dashboard() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedOrchid, setSelectedOrchid] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
 
   const fetchOrchids = async () => {
     try {
@@ -151,9 +149,7 @@ export default function Dashboard() {
       headerName: "Rating",
       width: 140,
       renderCell: (params) => (
-        <Box>
-          <Rating name='read-only' value={Number(params.value)} readOnly />
-        </Box>
+        <Rating name='read-only' value={Number(params.value)} readOnly />
       ),
     },
     {
@@ -161,7 +157,7 @@ export default function Dashboard() {
       headerName: "Special Orchid",
       width: 150,
       renderCell: (params) =>
-        params.value === "true" ? (
+        params.value ? (
           <Chip
             icon={<AutoAwesomeIcon />}
             label='Special'
@@ -351,23 +347,6 @@ export default function Dashboard() {
               color: theme.divider,
             },
           }}
-          components={{
-            Toolbar: GridToolbar,
-          }}
-          componentsProps={{
-            toolbar: {
-              sx: {
-                color: theme.text.primary,
-                "& .MuiButton-root": {
-                  color: theme.text.primary,
-                },
-                "& .MuiInputBase-root": {
-                  color: theme.text.primary,
-                  borderColor: theme.divider,
-                },
-              },
-            },
-          }}
         />
       </Paper>
       <Menu
@@ -462,14 +441,11 @@ export default function Dashboard() {
                 helperText={formik.touched.origin && formik.errors.origin}
               />
               <FormControl fullWidth>
-                <InputLabel id='demo-simple-select-label'>
-                  Orchid Category
-                </InputLabel>
+                <InputLabel id='category-label'>Orchid Category</InputLabel>
                 <Select
-                  labelId='demo-simple-select-label'
+                  labelId='category-label'
                   id='category'
                   name='category'
-                  label='Orchid Category'
                   value={formik.values.category}
                   onChange={formik.handleChange}
                   error={
@@ -477,7 +453,7 @@ export default function Dashboard() {
                   }
                 >
                   {categories.map((c) => (
-                    <MenuItem value={c.name} key={c.id}>
+                    <MenuItem key={c.id} value={c.name}>
                       {c.name}
                     </MenuItem>
                   ))}
@@ -528,12 +504,6 @@ export default function Dashboard() {
                 <Typography variant='body2'>
                   Selected file: {formik.values.image.name}
                 </Typography>
-              )}
-              {uploadProgress > 0 && (
-                <CircularProgress
-                  variant='determinate'
-                  value={uploadProgress}
-                />
               )}
               <Button
                 type='submit'
