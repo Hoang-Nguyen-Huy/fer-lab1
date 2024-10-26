@@ -23,5 +23,5 @@ const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 export const auth = getAuth();
 export const storage = getStorage(app);
-
-export const DEFAULT_IMAGE = import.meta.env.DEFAULT_IMAGE;
+export const DEFAULT_IMAGE =
+  "https://firebasestorage.googleapis.com/v0/b/fer-lab-da8b3.appspot.com/o/default%2Fimage.jpg?alt=media&token=2f5d8998-9a0f-46e3-a770-ca62b25ac3ca";

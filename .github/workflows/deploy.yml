@@ -33,7 +33,6 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           VITE_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
           VITE_API_BASE_URL: ${{ secrets.API_BASE_URL }}
-          DEFAULT_IMAGE: ${{ secrets.DEFAULT_IMAGE }}
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
