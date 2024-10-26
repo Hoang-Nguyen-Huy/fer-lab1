@@ -25,6 +25,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
+  Fade,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
@@ -507,257 +508,261 @@ export default function Dashboard() {
         onClose={handleCloseModal}
         disableScrollLock={true}
       >
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: theme.card.backgroundColor,
-            boxShadow: 24,
-            p: 4,
-            borderRadius: 2,
-            maxHeight: "90vh",
-            overflowY: "auto",
-            color: theme.text.primary,
-          }}
-        >
-          <Typography variant='h6' component='h2' gutterBottom>
-            {modalMode === "create" ? "Add New Orchid" : "Update Orchid"}
-          </Typography>
-          <form onSubmit={formik.handleSubmit}>
-            <FormControl fullWidth sx={{ gap: 2 }}>
-              <TextField
-                fullWidth
-                id='name'
-                name='name'
-                label='Orchid Name'
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-                sx={{
-                  "& .MuiInputLabel-root": { color: theme.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.text.secondary },
-                    "&:hover fieldset": { borderColor: theme.text.primary },
-                    "&.Mui-focused fieldset": {
-                      borderColor: theme.text.primary,
+        <Fade in={isModalOpen}>
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 400,
+              bgcolor: theme.card.backgroundColor,
+              boxShadow: 24,
+              p: 4,
+              borderRadius: 2,
+              maxHeight: "90vh",
+              overflowY: "auto",
+              color: theme.text.primary,
+            }}
+          >
+            <Typography variant='h6' component='h2' gutterBottom>
+              {modalMode === "create" ? "Add New Orchid" : "Update Orchid"}
+            </Typography>
+            <form onSubmit={formik.handleSubmit}>
+              <FormControl fullWidth sx={{ gap: 2 }}>
+                <TextField
+                  fullWidth
+                  id='name'
+                  name='name'
+                  label='Orchid Name'
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                  sx={{
+                    "& .MuiInputLabel-root": { color: theme.text.secondary },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: theme.text.secondary },
+                      "&:hover fieldset": { borderColor: theme.text.primary },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.text.primary,
+                      },
                     },
-                  },
-                  "& .MuiInputBase-input": { color: theme.text.primary },
-                }}
-              />
-              <FormControl fullWidth>
-                <Box>
-                  <Typography component='legend'>Rating</Typography>
-                </Box>
-                <Rating
-                  name='rating'
-                  value={Number(formik.values.rating)}
-                  onChange={(event, newValue) => {
-                    formik.setFieldValue("rating", newValue);
+                    "& .MuiInputBase-input": { color: theme.text.primary },
                   }}
                 />
-              </FormControl>
-              <Box>
-                <Typography component='legend'>Special Orchid</Typography>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      name='isSpecial'
-                      checked={formik.values.isSpecial}
-                      onChange={formik.handleChange}
-                    />
-                  }
-                />
-              </Box>
-              <TextField
-                fullWidth
-                id='color'
-                name='color'
-                label='Orchid Color'
-                value={formik.values.color}
-                onChange={formik.handleChange}
-                error={formik.touched.color && Boolean(formik.errors.color)}
-                helperText={formik.touched.color && formik.errors.color}
-                sx={{
-                  "& .MuiInputLabel-root": { color: theme.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.text.secondary },
-                    "&:hover fieldset": { borderColor: theme.text.primary },
-                    "&.Mui-focused fieldset": {
-                      borderColor: theme.text.primary,
-                    },
-                  },
-                  "& .MuiInputBase-input": { color: theme.text.primary },
-                }}
-              />
-              <FormControl
-                fullWidth
-                sx={{
-                  "& .MuiInputLabel-root": { color: theme.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.text.secondary },
-                    "&:hover fieldset": { borderColor: theme.text.primary },
-                    "&.Mui-focused fieldset": {
-                      borderColor: theme.text.primary,
-                    },
-                  },
-                  "& .MuiInputBase-input": { color: theme.text.primary },
-                }}
-              >
-                <InputLabel id='origin-label'>Orchid Origin</InputLabel>
-                <Select
-                  labelId='origin-label'
-                  id='origin'
-                  name='origin'
-                  label='Orchid Origin'
-                  value={formik.values.origin}
-                  onChange={formik.handleChange}
-                  error={formik.touched.origin && Boolean(formik.errors.origin)}
-                >
-                  {countries.map((c) => (
-                    <MenuItem key={c.code} value={c.label}>
-                      <img
-                        loading='lazy'
-                        width='20'
-                        srcSet={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png 2x`}
-                        src={`https://flagcdn.com/w20/${c.code.toLowerCase()}.png`}
-                        alt=''
-                      />
-                      {c.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl
-                fullWidth
-                sx={{
-                  "& .MuiInputLabel-root": { color: theme.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.text.secondary },
-                    "&:hover fieldset": { borderColor: theme.text.primary },
-                    "&.Mui-focused fieldset": {
-                      borderColor: theme.text.primary,
-                    },
-                  },
-                  "& .MuiInputBase-input": { color: theme.text.primary },
-                }}
-              >
-                <InputLabel id='category-label'>Orchid Category</InputLabel>
-                <Select
-                  labelId='category-label'
-                  id='category'
-                  name='category'
-                  label='Orchid Category'
-                  value={formik.values.category}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.category && Boolean(formik.errors.category)
-                  }
-                >
-                  {categories.map((c) => (
-                    <MenuItem key={c.id} value={c.name}>
-                      {c.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <TextField
-                fullWidth
-                id='detail'
-                name='detail'
-                label='Detail'
-                multiline
-                rows={4}
-                value={formik.values.detail}
-                onChange={formik.handleChange}
-                error={formik.touched.detail && Boolean(formik.errors.detail)}
-                helperText={formik.touched.detail && formik.errors.detail}
-                sx={{
-                  "& .MuiInputLabel-root": { color: theme.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.text.secondary },
-                    "&:hover fieldset": { borderColor: theme.text.primary },
-                    "&.Mui-focused fieldset": {
-                      borderColor: theme.text.primary,
-                    },
-                  },
-                  "& .MuiInputBase-input": { color: theme.text.primary },
-                }}
-              />
-              <TextField
-                fullWidth
-                id='video'
-                name='video'
-                label='Orchid Video URL'
-                value={formik.values.video}
-                onChange={formik.handleChange}
-                error={formik.touched.video && Boolean(formik.errors.video)}
-                helperText={formik.touched.video && formik.errors.video}
-                sx={{
-                  "& .MuiInputLabel-root": { color: theme.text.secondary },
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": { borderColor: theme.text.secondary },
-                    "&:hover fieldset": { borderColor: theme.text.primary },
-                    "&.Mui-focused fieldset": {
-                      borderColor: theme.text.primary,
-                    },
-                  },
-                  "& .MuiInputBase-input": { color: theme.text.primary },
-                }}
-              />
-              <input
-                accept='image/*'
-                style={{ display: "none" }}
-                id='raised-button-file'
-                type='file'
-                onChange={(event) => {
-                  onSelectFile(event);
-                  formik.setFieldValue("image", event.currentTarget.files[0]);
-                }}
-              />
-              <label htmlFor='raised-button-file'>
-                <Button
-                  variant='contained'
-                  component='span'
-                  startIcon={<CloudUploadIcon />}
-                  sx={{ mt: 2, mb: 2 }}
-                >
-                  Upload Image
-                </Button>
-              </label>
-              {imagePreview && (
-                <Box sx={{ mt: 2, mb: 2 }}>
-                  <img
-                    src={imagePreview}
-                    alt='Image preview'
-                    style={{
-                      maxWidth: "100%",
-                      maxHeight: "200px",
-                      objectFit: "contain",
+                <FormControl fullWidth>
+                  <Box>
+                    <Typography component='legend'>Rating</Typography>
+                  </Box>
+                  <Rating
+                    name='rating'
+                    value={Number(formik.values.rating)}
+                    onChange={(event, newValue) => {
+                      formik.setFieldValue("rating", newValue);
                     }}
                   />
+                </FormControl>
+                <Box>
+                  <Typography component='legend'>Special Orchid</Typography>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        name='isSpecial'
+                        checked={formik.values.isSpecial}
+                        onChange={formik.handleChange}
+                      />
+                    }
+                  />
                 </Box>
-              )}
-              <Button
-                type='submit'
-                variant='contained'
-                color='primary'
-                disabled={formik.isSubmitting}
-                sx={{ mt: 2 }}
-              >
-                {formik.isSubmitting
-                  ? "Submitting..."
-                  : modalMode === "create"
-                  ? "Submit"
-                  : "Update"}
-              </Button>
-            </FormControl>
-          </form>
-        </Box>
+                <TextField
+                  fullWidth
+                  id='color'
+                  name='color'
+                  label='Orchid Color'
+                  value={formik.values.color}
+                  onChange={formik.handleChange}
+                  error={formik.touched.color && Boolean(formik.errors.color)}
+                  helperText={formik.touched.color && formik.errors.color}
+                  sx={{
+                    "& .MuiInputLabel-root": { color: theme.text.secondary },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: theme.text.secondary },
+                      "&:hover fieldset": { borderColor: theme.text.primary },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.text.primary,
+                      },
+                    },
+                    "& .MuiInputBase-input": { color: theme.text.primary },
+                  }}
+                />
+                <FormControl
+                  fullWidth
+                  sx={{
+                    "& .MuiInputLabel-root": { color: theme.text.secondary },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: theme.text.secondary },
+                      "&:hover fieldset": { borderColor: theme.text.primary },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.text.primary,
+                      },
+                    },
+                    "& .MuiInputBase-input": { color: theme.text.primary },
+                  }}
+                >
+                  <InputLabel id='origin-label'>Orchid Origin</InputLabel>
+                  <Select
+                    labelId='origin-label'
+                    id='origin'
+                    name='origin'
+                    label='Orchid Origin'
+                    value={formik.values.origin}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.origin && Boolean(formik.errors.origin)
+                    }
+                  >
+                    {countries.map((c) => (
+                      <MenuItem key={c.code} value={c.label}>
+                        <img
+                          loading='lazy'
+                          width='20'
+                          srcSet={`https://flagcdn.com/w40/${c.code.toLowerCase()}.png 2x`}
+                          src={`https://flagcdn.com/w20/${c.code.toLowerCase()}.png`}
+                          alt=''
+                        />
+                        {c.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl
+                  fullWidth
+                  sx={{
+                    "& .MuiInputLabel-root": { color: theme.text.secondary },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: theme.text.secondary },
+                      "&:hover fieldset": { borderColor: theme.text.primary },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.text.primary,
+                      },
+                    },
+                    "& .MuiInputBase-input": { color: theme.text.primary },
+                  }}
+                >
+                  <InputLabel id='category-label'>Orchid Category</InputLabel>
+                  <Select
+                    labelId='category-label'
+                    id='category'
+                    name='category'
+                    label='Orchid Category'
+                    value={formik.values.category}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.category && Boolean(formik.errors.category)
+                    }
+                  >
+                    {categories.map((c) => (
+                      <MenuItem key={c.id} value={c.name}>
+                        {c.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <TextField
+                  fullWidth
+                  id='detail'
+                  name='detail'
+                  label='Detail'
+                  multiline
+                  rows={4}
+                  value={formik.values.detail}
+                  onChange={formik.handleChange}
+                  error={formik.touched.detail && Boolean(formik.errors.detail)}
+                  helperText={formik.touched.detail && formik.errors.detail}
+                  sx={{
+                    "& .MuiInputLabel-root": { color: theme.text.secondary },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: theme.text.secondary },
+                      "&:hover fieldset": { borderColor: theme.text.primary },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.text.primary,
+                      },
+                    },
+                    "& .MuiInputBase-input": { color: theme.text.primary },
+                  }}
+                />
+                <TextField
+                  fullWidth
+                  id='video'
+                  name='video'
+                  label='Orchid Video URL'
+                  value={formik.values.video}
+                  onChange={formik.handleChange}
+                  error={formik.touched.video && Boolean(formik.errors.video)}
+                  helperText={formik.touched.video && formik.errors.video}
+                  sx={{
+                    "& .MuiInputLabel-root": { color: theme.text.secondary },
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": { borderColor: theme.text.secondary },
+                      "&:hover fieldset": { borderColor: theme.text.primary },
+                      "&.Mui-focused fieldset": {
+                        borderColor: theme.text.primary,
+                      },
+                    },
+                    "& .MuiInputBase-input": { color: theme.text.primary },
+                  }}
+                />
+                <input
+                  accept='image/*'
+                  style={{ display: "none" }}
+                  id='raised-button-file'
+                  type='file'
+                  onChange={(event) => {
+                    onSelectFile(event);
+                    formik.setFieldValue("image", event.currentTarget.files[0]);
+                  }}
+                />
+                <label htmlFor='raised-button-file'>
+                  <Button
+                    variant='contained'
+                    component='span'
+                    startIcon={<CloudUploadIcon />}
+                    sx={{ mt: 2, mb: 2 }}
+                  >
+                    Upload Image
+                  </Button>
+                </label>
+                {imagePreview && (
+                  <Box sx={{ mt: 2, mb: 2 }}>
+                    <img
+                      src={imagePreview}
+                      alt='Image preview'
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "200px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </Box>
+                )}
+                <Button
+                  type='submit'
+                  variant='contained'
+                  color='primary'
+                  disabled={formik.isSubmitting}
+                  sx={{ mt: 2 }}
+                >
+                  {formik.isSubmitting
+                    ? "Submitting..."
+                    : modalMode === "create"
+                    ? "Submit"
+                    : "Update"}
+                </Button>
+              </FormControl>
+            </form>
+          </Box>
+        </Fade>
       </Modal>
       <Dialog
         open={isDeleteDialogOpen}
@@ -770,6 +775,7 @@ export default function Dashboard() {
             color: theme.text.primary,
           },
         }}
+        disableScrollLock={true}
       >
         <DialogTitle id='alert-dialog-title'>{"Confirm Deletion"}</DialogTitle>
         <DialogContent>
