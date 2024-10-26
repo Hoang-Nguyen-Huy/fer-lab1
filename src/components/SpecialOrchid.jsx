@@ -12,7 +12,7 @@ export default function SpecialOrchid() {
     const fetchOrchids = async () => {
       try {
         const data = await getSpecialOrchids();
-        setApi(data);
+        setApi(data.reverse());
       } catch (error) {
         console.error("Failed to fetch orchids:", error);
       }

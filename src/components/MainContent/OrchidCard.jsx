@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { ThemeContext } from "../../themes/ThemeContext";
+import { DEFAULT_IMAGE } from "../Dashboard";
 
 const MotionCard = motion(Card);
 
@@ -49,8 +50,14 @@ export default function OrchidCard({ orchid }) {
             onClick={() => showModal(orchid)}
           >
             <motion.img
-              src={orchid.image + "?auto=format&fit=crop&w=318"}
-              srcSet={orchid.image + "?auto=format&fit=crop&w=318&dpr=2 2x"}
+              src={
+                orchid.image + "?auto=format&fit=crop&w=318" ||
+                DEFAULT_IMAGE + "?auto=format&fit=crop&w=318"
+              }
+              srcSet={
+                orchid.image + "?auto=format&fit=crop&w=318&dpr=2 2x" ||
+                DEFAULT_IMAGE + "?auto=format&fit=crop&w=318&dpr=2 2x"
+              }
               loading='lazy'
               alt={orchid.name}
               whileHover={{ scale: 1.1 }}
@@ -155,8 +162,14 @@ export default function OrchidCard({ orchid }) {
             <CardOverflow>
               <AspectRatio ratio='2'>
                 <img
-                  src={orchid.image + "?auto=format&fit=crop&w=318"}
-                  srcSet={orchid.image + "?auto=format&fit=crop&w=318&dpr=2 2x"}
+                  src={
+                    orchid.image + "?auto=format&fit=crop&w=318" ||
+                    DEFAULT_IMAGE + "?auto=format&fit=crop&w=318"
+                  }
+                  srcSet={
+                    orchid.image + "?auto=format&fit=crop&w=318&dpr=2 2x" ||
+                    DEFAULT_IMAGE + "?auto=format&fit=crop&w=318&dpr=2 2x"
+                  }
                   loading='lazy'
                   alt={orchid.name}
                 />

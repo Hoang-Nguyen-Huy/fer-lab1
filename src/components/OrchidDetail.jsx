@@ -25,6 +25,7 @@ import { AspectRatio } from "@mui/joy";
 import { motion } from "framer-motion";
 import { RelatedOrchidsSlider } from "./RelatedOrchidSlider";
 import { getOrchidById } from "../apis/OrchidsApi";
+import { DEFAULT_IMAGE } from "./Dashboard";
 
 const MotionBox = motion(Box);
 
@@ -113,7 +114,7 @@ export default function OrchidDetail() {
                 <Box sx={{ position: "relative" }}>
                   <AspectRatio ratio='4/3'>
                     <img
-                      src={api.image}
+                      src={api.image || DEFAULT_IMAGE}
                       alt={api.name}
                       style={{
                         width: "100%",

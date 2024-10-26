@@ -45,6 +45,9 @@ const themes = {
       color: "rgba(255, 255, 255, 0.87)",
       borderColor: "#bb86fc",
     },
+    error: {
+      main: "#cf6679",
+    },
   },
   light: {
     header: {
@@ -90,6 +93,9 @@ const themes = {
       backgroundColor: "#e0e0e0",
       color: "rgba(0, 0, 0, 0.87)",
       borderColor: "#6200ee",
+    },
+    error: {
+      main: "#b00020",
     },
   },
 };
