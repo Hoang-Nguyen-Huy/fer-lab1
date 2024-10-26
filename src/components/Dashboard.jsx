@@ -42,6 +42,8 @@ import { storage } from "../firebase";
 import { categories } from "../OrchidCategory";
 import { countries } from "../OrchidOrigin";
 
+export const DEFAULT_IMAGE = "src/assets/images/image.jpg";
+
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
   rating: Yup.number().min(0).max(5).required("Rating is required"),
@@ -143,7 +145,7 @@ export default function Dashboard() {
     validationSchema: validationSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
-        let imageUrl = "";
+        let imageUrl = DEFAULT_IMAGE;
         if (
           (values.image && modalMode === "create") ||
           (modalMode === "update" && values.image !== selectedOrchid.image)
@@ -153,12 +155,15 @@ export default function Dashboard() {
           imageUrl = await getDownloadURL(storageRef);
         }
 
+        console.log(values.image);
+        console.log(selectedOrchid.image);
+
         const orchidData = {
           ...values,
-          image:
-            imageUrl === "" && selectedOrchid.image !== null
-              ? selectedOrchid.image
-              : imageUrl,
+          image: imageUrl,
+          // && selectedOrchid.image !== null
+          //   ? selectedOrchid.image
+          //   : imageUrl,
         };
 
         if (modalMode === "create") {
