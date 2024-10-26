@@ -537,6 +537,17 @@ export default function Dashboard() {
                 onChange={formik.handleChange}
                 error={formik.touched.name && Boolean(formik.errors.name)}
                 helperText={formik.touched.name && formik.errors.name}
+                sx={{
+                  "& .MuiInputLabel-root": { color: theme.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.text.secondary },
+                    "&:hover fieldset": { borderColor: theme.text.primary },
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.text.primary,
+                    },
+                  },
+                  "& .MuiInputBase-input": { color: theme.text.primary },
+                }}
               />
               <FormControl fullWidth>
                 <Box>
@@ -571,8 +582,32 @@ export default function Dashboard() {
                 onChange={formik.handleChange}
                 error={formik.touched.color && Boolean(formik.errors.color)}
                 helperText={formik.touched.color && formik.errors.color}
+                sx={{
+                  "& .MuiInputLabel-root": { color: theme.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.text.secondary },
+                    "&:hover fieldset": { borderColor: theme.text.primary },
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.text.primary,
+                    },
+                  },
+                  "& .MuiInputBase-input": { color: theme.text.primary },
+                }}
               />
-              <FormControl fullWidth>
+              <FormControl
+                fullWidth
+                sx={{
+                  "& .MuiInputLabel-root": { color: theme.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.text.secondary },
+                    "&:hover fieldset": { borderColor: theme.text.primary },
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.text.primary,
+                    },
+                  },
+                  "& .MuiInputBase-input": { color: theme.text.primary },
+                }}
+              >
                 <InputLabel id='origin-label'>Orchid Origin</InputLabel>
                 <Select
                   labelId='origin-label'
@@ -597,7 +632,20 @@ export default function Dashboard() {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl fullWidth>
+              <FormControl
+                fullWidth
+                sx={{
+                  "& .MuiInputLabel-root": { color: theme.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.text.secondary },
+                    "&:hover fieldset": { borderColor: theme.text.primary },
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.text.primary,
+                    },
+                  },
+                  "& .MuiInputBase-input": { color: theme.text.primary },
+                }}
+              >
                 <InputLabel id='category-label'>Orchid Category</InputLabel>
                 <Select
                   labelId='category-label'
@@ -628,6 +676,17 @@ export default function Dashboard() {
                 onChange={formik.handleChange}
                 error={formik.touched.detail && Boolean(formik.errors.detail)}
                 helperText={formik.touched.detail && formik.errors.detail}
+                sx={{
+                  "& .MuiInputLabel-root": { color: theme.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.text.secondary },
+                    "&:hover fieldset": { borderColor: theme.text.primary },
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.text.primary,
+                    },
+                  },
+                  "& .MuiInputBase-input": { color: theme.text.primary },
+                }}
               />
               <TextField
                 fullWidth
@@ -638,6 +697,17 @@ export default function Dashboard() {
                 onChange={formik.handleChange}
                 error={formik.touched.video && Boolean(formik.errors.video)}
                 helperText={formik.touched.video && formik.errors.video}
+                sx={{
+                  "& .MuiInputLabel-root": { color: theme.text.secondary },
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": { borderColor: theme.text.secondary },
+                    "&:hover fieldset": { borderColor: theme.text.primary },
+                    "&.Mui-focused fieldset": {
+                      borderColor: theme.text.primary,
+                    },
+                  },
+                  "& .MuiInputBase-input": { color: theme.text.primary },
+                }}
               />
               <input
                 accept='image/*'
