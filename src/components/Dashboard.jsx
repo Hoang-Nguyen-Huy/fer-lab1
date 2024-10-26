@@ -148,22 +148,19 @@ export default function Dashboard() {
         let imageUrl = DEFAULT_IMAGE;
         if (
           (values.image && modalMode === "create") ||
-          (modalMode === "update" && values.image !== selectedOrchid.image)
+          (modalMode === "update" && values.image !== selectedOrchid?.image)
         ) {
           const storageRef = ref(storage, `orchid-images/${values.image.name}`);
           await uploadBytes(storageRef, values.image);
           imageUrl = await getDownloadURL(storageRef);
         }
 
-        console.log(values.image);
-        console.log(selectedOrchid.image);
-
         const orchidData = {
           ...values,
-          image: imageUrl,
-          // && selectedOrchid.image !== null
-          //   ? selectedOrchid.image
-          //   : imageUrl,
+          image:
+            imageUrl === DEFAULT_IMAGE && selectedOrchid?.image !== null
+              ? selectedOrchid.image
+              : imageUrl,
         };
 
         if (modalMode === "create") {
