@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { ThemeContext } from "../../themes/ThemeContext";
-import { DEFAULT_IMAGE } from "../Dashboard";
+import { DEFAULT_IMAGE } from "../../firebase";
 
 const MotionCard = motion(Card);
 

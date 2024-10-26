@@ -25,7 +25,7 @@ import { AspectRatio } from "@mui/joy";
 import { motion } from "framer-motion";
 import { RelatedOrchidsSlider } from "./RelatedOrchidSlider";
 import { getOrchidById } from "../apis/OrchidsApi";
-import { DEFAULT_IMAGE } from "./Dashboard";
+import { DEFAULT_IMAGE } from "../firebase";
 
 const MotionBox = motion(Box);
 
