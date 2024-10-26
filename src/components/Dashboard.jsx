@@ -155,12 +155,17 @@ export default function Dashboard() {
           imageUrl = await getDownloadURL(storageRef);
         }
 
+        let updateImage = false;
+
+        if (selectedOrchid !== null) {
+          if (imageUrl === DEFAULT_IMAGE && selectedOrchid.image !== null) {
+            updateImage = true;
+          }
+        }
+
         const orchidData = {
           ...values,
-          image:
-            imageUrl === DEFAULT_IMAGE && selectedOrchid?.image !== null
-              ? selectedOrchid.image
-              : imageUrl,
+          image: updateImage ? selectedOrchid.image : imageUrl,
         };
 
         if (modalMode === "create") {
