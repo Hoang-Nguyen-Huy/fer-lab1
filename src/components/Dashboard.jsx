@@ -20,6 +20,11 @@ import {
   Select,
   FormControlLabel,
   InputLabel,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { ThemeContext } from "../themes/ThemeContext";
@@ -66,6 +71,7 @@ export default function Dashboard() {
   const [modalMode, setModalMode] = useState("create");
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const fetchOrchids = async () => {
     try {
@@ -104,14 +110,25 @@ export default function Dashboard() {
     setAnchorEl(null);
   };
 
-  const handleDelete = async () => {
+  const handleDeleteClick = () => {
+    setIsDeleteDialogOpen(true);
+    setAnchorEl(null);
+  };
+
+  const handleDeleteConfirm = async () => {
     try {
       await deleteOrchid(selectedOrchid.Id);
       await fetchOrchids();
+      setIsDeleteDialogOpen(false);
       handleMenuClose();
     } catch (error) {
       console.error("Error deleting orchid: ", error);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteDialogOpen(false);
+    handleMenuClose();
   };
 
   const handleAddOrchid = () => {
@@ -483,7 +500,7 @@ export default function Dashboard() {
         }}
       >
         <MenuItem onClick={() => handleUpdate(selectedOrchid)}>Update</MenuItem>
-        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+        <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
       </Menu>
       <Modal
         open={isModalOpen}
@@ -672,6 +689,44 @@ export default function Dashboard() {
           </form>
         </Box>
       </Modal>
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
+        PaperProps={{
+          sx: {
+            backgroundColor: theme.card.backgroundColor,
+            color: theme.text.primary,
+          },
+        }}
+      >
+        <DialogTitle id='alert-dialog-title'>{"Confirm Deletion"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id='alert-dialog-description'
+            sx={{ color: theme.text.secondary }}
+          >
+            Are you sure you want to delete this orchid? This action cannot be
+            undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleDeleteCancel}
+            sx={{ color: theme.text.primary }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            autoFocus
+            sx={{ color: theme.error.main }}
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
