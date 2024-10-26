@@ -44,11 +44,9 @@ import {
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase";
+import { DEFAULT_IMAGE, storage } from "../firebase";
 import { categories } from "../OrchidCategory";
 import { countries } from "../OrchidOrigin";
-
-export const DEFAULT_IMAGE = "src/assets/images/image.jpg";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),

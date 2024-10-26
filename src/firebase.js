@@ -23,3 +23,5 @@ const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 export const auth = getAuth();
 export const storage = getStorage(app);
+
+export const DEFAULT_IMAGE = import.meta.env.DEFAULT_IMAGE;
