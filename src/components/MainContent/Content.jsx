@@ -12,7 +12,7 @@ export default function Content() {
     const fetchOrchids = async () => {
       try {
         const data = await getAllOrchids();
-        setApi(data);
+        setApi(data.reverse());
       } catch (error) {
         console.error("Failed to fetch orchids:", error);
       }

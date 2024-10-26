@@ -68,7 +68,7 @@ export default function Dashboard() {
   const fetchOrchids = async () => {
     try {
       const data = await getAllOrchids();
-      const processedOrchids = data.map((orchid, index) => ({
+      const processedOrchids = data.reverse().map((orchid, index) => ({
         ...orchid,
         id: orchid.Id || `orchid-${index + 1}`,
         index: index + 1,
