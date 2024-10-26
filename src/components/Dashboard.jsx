@@ -99,6 +99,7 @@ export default function Dashboard() {
     setModalMode("update");
     setIsModalOpen(true);
     setImagePreview(orchid.image);
+    setAnchorEl(null);
   };
 
   const handleDelete = async () => {
@@ -112,12 +113,16 @@ export default function Dashboard() {
   };
 
   const handleAddOrchid = () => {
+    setSelectedOrchid(null);
     setModalMode("create");
     setIsModalOpen(true);
     setImagePreview(null);
   };
 
   const handleCloseModal = () => {
+    if (selectedOrchid) {
+      setSelectedOrchid(null);
+    }
     setIsModalOpen(false);
     setImagePreview(null);
     formik.resetForm();
@@ -195,7 +200,7 @@ export default function Dashboard() {
       });
       setImagePreview(selectedOrchid.image);
     }
-  }, [selectedOrchid, modalMode]);
+  }, [selectedOrchid, modalMode, isModalOpen]);
 
   useEffect(() => {
     if (!selectedFile) {
